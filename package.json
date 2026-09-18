@@ -1,0 +1,13 @@
+{
+  "name": "vom-food",
+  "version": "1.0.0",
+  "description": "VOM FOOD — Application Web de restaurant (Kinshasa & Mbanza-Ngungu) : commandes, chat en direct, espace gérante.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

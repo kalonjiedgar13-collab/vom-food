@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VOM FOOD — Mon profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/auth.css">
+</head>
+<body>
+  <button class="back-btn" onclick="go('./creer-compte.html')" aria-label="Retour">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+
+  <div class="page">
+    <div class="card" style="margin-top:60px;">
+      <!-- En-tête -->
+      <div class="card-head">
+        <div class="titre">Mon profil</div>
+      </div>
+      <div class="card-sub">Complétez vos informations</div>
+
+      <!-- Photo de profil (cliquable) -->
+      <div class="field" style="align-items:center; margin-top:22px;">
+        <div class="avatar-picker" onclick="openAvatarChoice()" title="Choisir une photo">
+          <img id="avatarPreview" src="./public/icons/icon-192x192.png" alt="Photo de profil">
+          <div class="avatar-overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#f0dcc0; font-weight:700;">Touchez pour ajouter une photo</div>
+      </div>
+
+      <!-- Champ Nom complet -->
+      <div class="field" id="fieldName">
+        <label>Nom complet</label>
+        <div class="input-wrap">
+          <input id="name" type="text" placeholder="Ex : Marie M." autocomplete="name">
+        </div>
+        <div class="field-error">Veuillez renseigner votre nom</div>
+      </div>
+
+      <!-- Champ Téléphone ou E-mail -->
+      <div class="field" id="fieldId">
+        <label>Téléphone ou E-mail</label>
+        <div class="input-wrap">
+          <input id="id" type="text" placeholder="081 234 5678 ou nom@email.com" autocomplete="username">
+        </div>
+        <div class="field-error">Veuillez renseigner votre téléphone ou e-mail</div>
+      </div>
+
+      <!-- Champ Quartier / Commune -->
+      <div class="field" id="fieldZone">
+        <label>Quartier / Commune</label>
+        <div class="input-wrap">
+          <input id="zone" type="text" placeholder="Ex : Gombe" autocomplete="address-level2">
+        </div>
+        <div class="field-error">Veuillez renseigner votre quartier</div>
+      </div>
+
+      <!-- Champ Avenue + n° -->
+      <div class="field" id="fieldAddress">
+        <label>Avenue + n°</label>
+        <div class="input-wrap">
+          <input id="address" type="text" placeholder="Ex : Av. de la Paix N° 45" autocomplete="street-address">
+        </div>
+        <div class="field-error">Veuillez renseigner votre avenue</div>
+      </div>
+
+      <!-- Bouton -->
+      <button class="btn" id="btn" onclick="doSaveProfile()">
+        <span class="label">Terminer</span>
+        <span class="spinner"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fenêtre de choix photo (modale) -->
+  <div id="avatarModal" class="avatar-modal" onclick="if(event.target===this) closeAvatarChoice()">
+    <div class="avatar-modal-card">
+      <div class="avatar-modal-title">Photo de profil</div>
+      <button class="avatar-modal-btn" onclick="openCamera()">
+        <span>📷</span> Prendre une photo
+      </button>
+      <button class="avatar-modal-btn" onclick="openGallery()">
+        <span>🖼️</span> Importer une photo
+      </button>
+      <button class="avatar-modal-cancel" onclick="closeAvatarChoice()">Annuler</button>
+    </div>
+  </div>
+
+  <input type="file" id="avatarFile" accept="image/*" onchange="previewAvatar(this)">
+  <input type="file" id="avatarCam" accept="image/*" capture="environment" onchange="previewAvatar(this)">
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  var avatarData = null;
+
+  function openAvatarChoice(){
+    document.getElementById('avatarModal').classList.add('show');
+  }
+  function closeAvatarChoice(){
+    document.getElementById('avatarModal').classList.remove('show');
+  }
+
+  // 📷 Ouvre l'appareil photo (caméra arrière sur mobile)
+  function openCamera(){
+    closeAvatarChoice();
+    var input = document.getElementById('avatarCam');
+    input.value = '';
+    input.click();
+  }
+
+  // 🖼️ Ouvre la galerie / explorateur de fichiers
+  function openGallery(){
+    closeAvatarChoice();
+    var input = document.getElementById('avatarFile');
+    input.value = '';
+    input.click();
+  }
+
+  function previewAvatar(input){
+    if (!input.files || !input.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      document.getElementById('avatarPreview').src = e.target.result;
+      avatarData = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  function go(url){
+    document.body.classList.add('fade-out');
+    setTimeout(function(){ location.href = url; }, 250);
+  }
+  function toast(m){
+    var t=document.getElementById('toast');
+    t.innerText=m;
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+  function setError(field, on){
+    document.getElementById(field).classList.toggle('error', on);
+  }
+  function doSaveProfile(){
+    var n=document.getElementById('name').value.trim();
+    var id=document.getElementById('id').value.trim();
+    var zone=document.getElementById('zone').value.trim();
+    var address=document.getElementById('address').value.trim();
+
+    setError('fieldName', !n);
+    setError('fieldId', !id);
+    setError('fieldZone', !zone);
+    setError('fieldAddress', !address);
+    if(!n||!id||!zone||!address) return;
+
+    // Sauvegarder le profil (partagé avec l'app via localStorage)
+    var profile = {
+      name: n,
+      contact: id,
+      zone: zone,
+      address: address,
+      avatar: avatarData || null
+    };
+    localStorage.setItem('vom_client_profile_v1', JSON.stringify(profile));
+
+    var btn=document.getElementById('btn');
+    btn.classList.add('loading');
+    setTimeout(function(){
+      go('./index.html');
+    }, 900);
+  }
+</script>
+</body>
+</html>

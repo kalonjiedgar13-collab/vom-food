@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VOM FOOD — Connexion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/auth.css">
+</head>
+<body>
+  <button class="back-btn" onclick="go('./welcome.html')" aria-label="Retour">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+
+  <div class="page">
+    <div class="logo" style="margin-top:46px;">
+      <img src="./public/assets/vom_logo_net.png" alt="VOM FOOD">
+    </div>
+
+    <div class="card" style="margin-top:26px;">
+      <!-- En-tête -->
+      <div class="card-head">
+        <div class="titre">Connexion</div>
+        <button class="link" onclick="go('./creer-compte.html')">S'inscrire</button>
+      </div>
+      <div class="card-sub">Connectez-vous</div>
+
+      <!-- Champ Téléphone ou E-mail -->
+      <div class="field" id="fieldId">
+        <label>Téléphone ou E-mail</label>
+        <div class="input-wrap">
+          <input id="id" type="text" placeholder="0XX XXX XXX ou email" autocomplete="username">
+        </div>
+        <div class="field-error">Veuillez renseigner votre téléphone ou e-mail</div>
+      </div>
+
+      <!-- Champ Mot de passe -->
+      <div class="field" id="fieldPass">
+        <label>Mot de passe</label>
+        <div class="input-wrap">
+          <input id="pass" type="password" minlength="6" placeholder="••••••••" autocomplete="current-password">
+          <button class="eye" onclick="togglePass()" aria-label="Afficher le mot de passe">
+            <svg id="eyeIcon" width="19" height="19" viewBox="0 0 24 24" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="field-error">Veuillez renseigner votre mot de passe</div>
+      </div>
+
+      <!-- Bouton -->
+      <button class="btn" id="btn" onclick="doLogin()">
+        <span class="label">Se connecter</span>
+        <span class="spinner"></span>
+      </button>
+
+      <!-- Lien bas -->
+      <button class="forgot" onclick="toast('Un code de réinitialisation a été envoyé par SMS')">Mot de passe oublié ?</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  function go(url){
+    document.body.classList.add('fade-out');
+    setTimeout(function(){ location.href = url; }, 250);
+  }
+  function toast(m){
+    var t=document.getElementById('toast');
+    t.innerText=m;
+    t.classList.add('show');
+    clearTimeout(t._h);
+    t._h=setTimeout(function(){ t.classList.remove('show'); },1900);
+  }
+  function togglePass(){
+    var i=document.getElementById('pass');
+    i.type = i.type==='password' ? 'text' : 'password';
+  }
+  function setError(field, on){
+    document.getElementById(field).classList.toggle('error', on);
+  }
+  function doLogin(){
+    var id=document.getElementById('id').value.trim();
+    var pa=document.getElementById('pass').value.trim();
+
+    setError('fieldId', !id);
+    setError('fieldPass', !pa);
+    if(!id||!pa) return;
+
+    // ============ ACCÈS GÉRANTE (caché) ============
+    // On lit l'identifiant + PIN depuis les réglages (modifiables dans l'admin)
+    var adminId = 'cheffe';
+    var storedPin = '1234';
+    try {
+      var sec = localStorage.getItem('vom_security_settings_v1');
+      if (sec) {
+        var p = JSON.parse(sec);
+        if (p.adminId) adminId = p.adminId;
+        if (p.pin) storedPin = p.pin;
+      }
+    } catch(e) {}
+
+    // Si l'identifiant est celui de la gérante, on vérifie le code PIN
+    if (id.toLowerCase() === adminId.toLowerCase()) {
+      if (pa !== storedPin) {
+        setError('fieldPass', true);
+        var err = document.querySelector('#fieldPass .field-error');
+        if (err) err.innerText = 'Code PIN incorrect';
+        return;
+      }
+      sessionStorage.setItem('vom_admin_ok', '1');
+      localStorage.setItem('vom_session_v1', 'admin');
+      go('./admin.html');
+      return;
+    }
+
+    // ============ CLIENT NORMAL ============
+    setError('fieldPass', pa.length < 6);
+    if(pa.length < 6) return;
+
+    localStorage.setItem('vom_session_v1', 'client');
+
+    var btn=document.getElementById('btn');
+    btn.classList.add('loading');
+    setTimeout(function(){
+      go('./index.html');
+    }, 900);
+  }
+</script>
+</body>
+</html>

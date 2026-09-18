@@ -1,0 +1,422 @@
+/* ============================================================
+   VOM FOOD — DESIGN SYSTEM PARTAGÉ (auth + onboarding)
+   Palette unique, composants communs, finitions UX.
+   Utilisé par : welcome.html · connexion.html · creer-compte.html
+   ============================================================ */
+
+:root{
+  /* Palette officielle VOM FOOD */
+  --brand:        #8b4513;   /* chocolat principal */
+  --brand-dark:   #6e330a;   /* chocolat foncé */
+  --brand-deep:   #5b2c12;   /* chocolat très foncé */
+  --accent:       #d4a574;   /* caramel doré */
+  --accent-2:     #a8652e;   /* caramel chaud */
+  --bg:           #fdf8ef;   /* crème officielle */
+  --bg-2:         #f4ebdc;
+  --text:         #3c2f2f;   /* texte foncé */
+  --text-muted:   #7a6a5a;
+  --placeholder:  #b7a88f;
+  --white:        #ffffff;
+
+  /* Dégradé "chocolat chaud & vif" de la vitre */
+  --glass-grad: linear-gradient(150deg, #9c5a28 0%, #7a3d18 45%, #5b2c12 100%);
+
+  --shadow-glass:
+    0 2px 4px rgba(60,40,20,.20),
+    0 10px 20px rgba(60,40,20,.30),
+    0 22px 46px rgba(60,40,20,.35),
+    inset 0 2px 0 rgba(255,255,255,.25),
+    inset 0 -3px 0 rgba(0,0,0,.20);
+
+  --shadow-btn:
+    0 6px 0 #3a2010,
+    0 10px 22px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -2px 3px rgba(0,0,0,.12);
+
+  --shadow-input:
+    inset 0 2px 5px rgba(0,0,0,.22),
+    inset 0 -1px 0 rgba(0,0,0,.08),
+    0 1px 0 rgba(255,255,255,.45);
+
+  --radius: 14px;
+}
+
+/* ---------- Reset ---------- */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{height:100%;}
+html,body{
+  width:100%; min-height:100vh;
+  min-height:100dvh;
+  background:
+    radial-gradient(110% 80% at 12% 0%, var(--bg) 0%, transparent 55%),
+    radial-gradient(110% 80% at 88% 100%, var(--bg-2) 0%, transparent 55%),
+    linear-gradient(160deg, var(--bg) 0%, #ead9c4 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+body{
+  display:flex; flex-direction:column; align-items:center;
+}
+
+/* ---------- Conteneur de page ---------- */
+.page{
+  width:100%; max-width:420px; min-height:100%;
+  display:flex; flex-direction:column; align-items:center;
+  padding:0 26px;
+  position:relative; z-index:2;
+}
+
+/* ---------- Logo centré en haut ---------- */
+.logo{
+  width:min(60%, 200px);
+  position:relative; z-index:2;
+}
+.logo img{width:100%; height:auto; display:block;}
+
+/* ---------- La vitre chocolat ---------- */
+.card{
+  width:min(88%, 350px);
+  position:relative; z-index:2;
+  background:var(--glass-grad);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-glass);
+  padding:26px 24px 22px;
+}
+
+.card-head{
+  display:flex; justify-content:space-between; align-items:center;
+}
+.titre{
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:24px; font-weight:800; color:var(--white);
+}
+.link{
+  font-size:13px; font-weight:700; color:var(--white);
+  cursor:pointer; text-decoration:underline;
+  background:none; border:none; font-family:inherit;
+}
+.link:active{opacity:.7;}
+
+.card-sub{
+  margin-top:4px; font-size:13px; color:var(--white);
+}
+
+/* ---------- Champs (3D, sans bordure, reflet) ---------- */
+.field{
+  margin-top:18px;
+  display:flex; flex-direction:column; gap:7px;
+}
+.field label{
+  font-size:12.5px; font-weight:800; color:var(--white); padding-left:2px;
+}
+.input-wrap{
+  display:flex; align-items:center; gap:10px;
+  background:rgba(255,255,255,.92);
+  border:none;
+  border-radius:12px; padding:0 14px;
+  box-shadow:var(--shadow-input);
+  transition:box-shadow .15s, background .15s;
+}
+/* Focus visible : halo caramel (accessibilité) */
+.input-wrap:focus-within{
+  background:#fff;
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.15),
+    0 0 0 3px rgba(212,165,116,.55),
+    0 1px 0 rgba(255,255,255,.45);
+}
+.input-wrap input{
+  flex:1; border:none; outline:none; background:transparent;
+  padding:14px 0; font-size:14.5px; font-family:inherit; color:var(--text);
+}
+.input-wrap input::placeholder{color:var(--placeholder);}
+.eye{
+  border:none; background:transparent; cursor:pointer;
+  display:flex; opacity:.6; padding:4px;
+}
+.eye:hover{opacity:.9;}
+.eye svg{display:block; stroke:#7a6a5a; fill:none;}
+
+/* Message d'erreur sous le champ */
+.field-error{
+  display:none;
+  font-size:11.5px; font-weight:700; color:#ffd9c9;
+  padding-left:2px;
+}
+.field.error .field-error{display:block;}
+.field.error .input-wrap{
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.15), 0 0 0 3px rgba(255,120,90,.5);
+}
+
+/* ---------- Bouton (3D, s'enfonce) ---------- */
+.btn{
+  margin-top:22px;
+  width:100%; padding:15px; border-radius:12px;
+  border:none; font-family:inherit; font-size:15.5px; font-weight:800;
+  cursor:pointer; text-align:center; transition:transform .08s, box-shadow .08s;
+  background:var(--white); color:var(--brand-deep);
+  box-shadow:var(--shadow-btn);
+}
+.btn:active{
+  transform:translateY(4px);
+  box-shadow:
+    0 2px 0 #3a2010,
+    0 5px 12px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.9);
+}
+.btn:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+
+/* État "chargement" du bouton */
+.btn.loading{opacity:.8; pointer-events:none;}
+.btn .spinner{
+  display:none; width:16px; height:16px; border-radius:50%;
+  border:2.5px solid rgba(91,44,18,.3); border-top-color:#5b2c12;
+  animation:spin .7s linear infinite;
+  margin:0 auto;
+}
+.btn.loading .spinner{display:block;}
+.btn.loading .label{display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ---------- Liens bas de page ---------- */
+.forgot{
+  margin-top:16px; text-align:center;
+  font-size:12.5px; color:var(--white); font-weight:700; cursor:pointer;
+  text-decoration:underline; background:none; border:none; font-family:inherit;
+  display:block; width:100%;
+}
+.forgot:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+
+/* ---------- Toast partagé ---------- */
+.toast{
+  position:fixed; left:50%; bottom:90px;
+  transform:translateX(-50%) translateY(16px);
+  background:rgba(22,22,26,.94); color:#fff;
+  font-size:12px; font-weight:600; padding:10px 16px;
+  border-radius:13px; z-index:9999; opacity:0;
+  transition:opacity .22s ease, transform .22s ease;
+  text-align:center; pointer-events:none; max-width:82%;
+  box-shadow:0 8px 22px rgba(0,0,0,.45);
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+/* ============================================================
+   PAGE DE CHARGEMENT (welcome.html) — éléments spécifiques
+   ============================================================ */
+.logo-frame{
+  margin-top:16%;
+  background:var(--white);
+  border:1.5px solid #e4ddcf;
+  border-radius:8px;
+  padding:24px 22px;
+  width:min(90%, 360px);
+  box-shadow:0 6px 20px rgba(60,40,20,.10);
+  display:flex; align-items:center; justify-content:center;
+}
+.logo-frame img{width:100%; height:auto; display:block;}
+
+.slogan{
+  margin-top:26px;
+  font-family:'Playfair Display', Georgia, serif;
+  font-style:italic; font-weight:600;
+  color:var(--brand); font-size:15px;
+  text-align:center; padding:0 20px;
+}
+
+.progress-wrap{
+  margin-top:44px;
+  width:min(78%, 260px);
+  display:flex; align-items:center; gap:12px;
+}
+.progress{
+  flex:1; height:8px; border-radius:99px;
+  background:rgba(139,69,19,.15); overflow:hidden;
+}
+.progress span{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg, var(--brand), var(--accent));
+  border-radius:99px; transition:width .2s ease;
+}
+.pct{
+  font-size:14px; font-weight:800; color:var(--brand-dark);
+  width:42px; text-align:right;
+}
+.loading-label{
+  margin-top:14px; font-size:12.5px; color:var(--text-muted); letter-spacing:.5px;
+  transition:opacity .3s ease;
+}
+
+.spacer{flex:1;}
+
+.actions{width:100%; padding-bottom:34px;}
+
+.hidden{opacity:0; visibility:hidden; transform:translateY(10px); pointer-events:none;}
+.visible{opacity:1; visibility:visible; transform:translateY(0);}
+
+/* ---------- Responsive ---------- */
+@media (max-width:380px){
+  .card{padding:22px 18px 18px;}
+  .titre{font-size:21px;}
+}
+
+/* ============================================================
+   PAGE DE CHARGEMENT — variantes sur fond crème
+   ============================================================ */
+.loading-logo-frame{
+  margin-top:16%;
+  background:var(--white);
+  border:1.5px solid #e4ddcf;
+  border-radius:8px;
+  padding:24px 22px;
+  width:min(90%, 360px);
+  box-shadow:0 6px 20px rgba(60,40,20,.10);
+  display:flex; align-items:center; justify-content:center;
+}
+.loading-logo-frame img{width:100%; height:auto; display:block;}
+
+.loading-slogan{
+  margin-top:26px;
+  font-family:'Playfair Display', Georgia, serif;
+  font-style:italic; font-weight:600;
+  color:var(--brand); font-size:15px;
+  text-align:center; padding:0 20px;
+}
+
+.loading-progress-wrap{
+  margin-top:44px;
+  width:min(78%, 260px);
+  display:flex; align-items:center; gap:12px;
+}
+.loading-progress{
+  flex:1; height:8px; border-radius:99px;
+  background:rgba(139,69,19,.15); overflow:hidden;
+}
+.loading-progress span{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg, var(--brand), var(--accent));
+  border-radius:99px; transition:width .2s ease;
+}
+.loading-pct{
+  font-size:14px; font-weight:800; color:var(--brand-dark);
+  width:42px; text-align:right;
+}
+.loading-label{
+  margin-top:14px; font-size:12.5px; color:var(--text-muted); letter-spacing:.5px;
+  transition:opacity .3s ease;
+}
+
+/* ============================================================
+   TRANSITIONS & NAVIGATION
+   ============================================================ */
+/* Fondu d'arrivée sur chaque page */
+@keyframes pageIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:none;}
+}
+.page{animation:pageIn .5s ease both;}
+
+/* Fondu de sortie (avant changement de page) */
+body.fade-out{opacity:0; transition:opacity .25s ease;}
+
+/* Flèche retour (en haut à gauche, au-dessus du logo) */
+.back-btn{
+  position:fixed; top:16px; left:16px; z-index:10;
+  width:40px; height:40px; border-radius:50%;
+  background:rgba(255,255,255,.85);
+  border:1.5px solid #eadfce;
+  box-shadow:0 2px 8px rgba(60,40,20,.10);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:.15s;
+}
+.back-btn:active{transform:scale(.92);}
+.back-btn svg{display:block; stroke:#5b2c12;}
+
+/* ============================================================
+   SÉLECTEUR DE PHOTO DE PROFIL
+   ============================================================ */
+.avatar-picker{
+  position:relative;
+  width:96px; height:96px; border-radius:50%;
+  overflow:visible; cursor:pointer;
+}
+.avatar-picker img{
+  width:100%; height:100%; border-radius:50%;
+  object-fit:cover; display:block;
+  border:3px solid #fff;
+  box-shadow:0 4px 14px rgba(0,0,0,.30);
+}
+.avatar-overlay{
+  position:absolute; right:-2px; bottom:2px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--brand);
+  border:2px solid #fff;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  transition:.15s;
+}
+.avatar-overlay:active{transform:scale(.9);}
+.avatar-actions{
+  display:flex; gap:8px; margin-top:10px;
+}
+.avatar-btn{
+  padding:7px 14px; border-radius:99px;
+  border:1.5px solid rgba(255,255,255,.7);
+  background:rgba(255,255,255,.12);
+  color:#fff; font-family:inherit; font-size:12px; font-weight:700;
+  cursor:pointer; transition:.15s;
+}
+.avatar-btn:active{background:rgba(255,255,255,.25);}
+
+/* Champs fichier masqués mais cliquables (caméra + galerie) */
+#avatarFile, #avatarCam{
+  position:fixed;
+  left:-9999px;
+  width:1px; height:1px;
+  opacity:0;
+}
+
+/* ============================================================
+   FENÊTRE DE CHOIX PHOTO (modale)
+   ============================================================ */
+.avatar-modal{
+  position:fixed; inset:0; z-index:9998;
+  background:rgba(30,15,8,.55);
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  opacity:0; visibility:hidden; transition:.22s ease;
+}
+.avatar-modal.show{opacity:1; visibility:visible;}
+.avatar-modal-card{
+  width:100%; max-width:320px;
+  background:#fff; border-radius:18px;
+  padding:22px 18px 14px;
+  display:flex; flex-direction:column; gap:10px;
+  transform:translateY(12px); transition:.22s ease;
+}
+.avatar-modal.show .avatar-modal-card{transform:none;}
+.avatar-modal-title{
+  text-align:center;
+  font-family:'Playfair Display', Georgia, serif;
+  font-size:17px; font-weight:800; color:#3c2f2f;
+  margin-bottom:6px;
+}
+.avatar-modal-btn{
+  display:flex; align-items:center; gap:12px;
+  padding:13px 16px; border-radius:12px;
+  border:1.5px solid #eadfce; background:#fff;
+  font-family:inherit; font-size:14px; font-weight:700; color:#3c2f2f;
+  cursor:pointer; text-align:left; transition:.15s;
+}
+.avatar-modal-btn span{font-size:18px;}
+.avatar-modal-btn:active{background:#faf5ec; transform:scale(.98);}
+.avatar-modal-cancel{
+  margin-top:4px; padding:11px; border:none; border-radius:12px;
+  background:#f2ede4; color:#7a6a5a;
+  font-family:inherit; font-size:13.5px; font-weight:700; cursor:pointer;
+}
+.avatar-modal-cancel:active{opacity:.7;}

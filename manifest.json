@@ -1,0 +1,52 @@
+{
+  "name": "VOM FOOD - Restaurant, Fast Food & Grillades",
+  "short_name": "VOM FOOD",
+  "description": "Application Web officielle de VOM FOOD à Kinshasa & Mbanza-Ngungu. Grillades authentiques, prix unique 6.500 Fc, livraison 100% offerte.",
+  "start_url": "./welcome.html",
+  "display": "standalone",
+  "background_color": "#fffaf0",
+  "theme_color": "#8b4513",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": [
+    "food",
+    "shopping",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "./public/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./public/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./public/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Menu & Commander",
+      "short_name": "Menu",
+      "description": "Consulter les plats à 6.500 Fc et commander",
+      "url": "./index.html"
+    },
+    {
+      "name": "Discussions Directes",
+      "short_name": "Chat",
+      "description": "Discuter avec Cheffe Vom en direct",
+      "url": "./index.html"
+    }
+  ]
+}

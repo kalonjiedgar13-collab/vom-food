@@ -1,0 +1,4 @@
+# Dépendances et données locales (pas à déployer)
+node_modules/
+data/store.json
+.DS_Store

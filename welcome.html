@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VOM FOOD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/auth.css">
+</head>
+<body>
+  <div class="page">
+    <!-- Logo dans un cadre -->
+    <div class="loading-logo-frame">
+      <img src="./public/assets/vom_bienvenue_originale.jpg" alt="BIENVENUE chez VOM FOOD">
+    </div>
+
+    <!-- Slogan -->
+    <div class="loading-slogan">« Manger n'est pas un luxe, c'est un droit »</div>
+
+    <!-- Barre de chargement -->
+    <div class="loading-progress-wrap">
+      <div class="loading-progress"><span id="bar"></span></div>
+      <div class="loading-pct" id="pct">0%</div>
+    </div>
+    <div class="loading-label" id="loadingLabel">Chargement…</div>
+
+    <div class="spacer"></div>
+
+    <!-- Bouton (apparaît à 100%) -->
+    <div class="actions">
+      <button id="welcomeBtn" class="btn hidden" onclick="continueSession()">Continuer</button>
+    </div>
+  </div>
+
+<script>
+  var bar = document.getElementById('bar');
+  var pct = document.getElementById('pct');
+  var label = document.getElementById('loadingLabel');
+  var btn = document.getElementById('welcomeBtn');
+  var p = 0;
+
+  function step(){
+    p = Math.min(100, p + Math.random() * 14 + 5);
+    bar.style.width = p + '%';
+    pct.innerText = Math.floor(p) + '%';
+    if (p < 100) {
+      setTimeout(step, 160);
+    } else {
+      label.style.opacity = '0';
+      btn.classList.remove('hidden');
+      btn.classList.add('visible');
+    }
+  }
+
+  // Si une session existe → aller directement dans le compte.
+  // Sinon → page de connexion.
+  function continueSession(){
+    var session = localStorage.getItem('vom_session_v1');
+    if (session === 'admin') {
+      location.href = './admin.html';
+    } else if (session === 'client') {
+      location.href = './index.html';
+    } else {
+      location.href = './connexion.html';
+    }
+  }
+
+  setTimeout(step, 400);
+</script>
+</body>
+</html>

@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>VOM FOOD - Restaurant, Fast Food & Grillades</title>
+
+  <!-- PWA & Web App Meta Tags -->
+  <meta name="theme-color" content="#8b4513">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VOM FOOD">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="./public/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+  <!-- Cadre Smartphone (Sans Status Bar) -->
+  <div class="iphone-frame">
+
+    <div class="screen-viewport">
+
+      <!-- ======================================================== -->
+      <!-- 1. ÉCRAN ACCUEIL CLIENT                                  -->
+      <!-- ======================================================== -->
+      <div id="screen-home" class="screen-view active">
+        <div class="home-container">
+
+          <!-- Top Bar : Bouton Menu & Profil Client -->
+          <div class="home-top-bar">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Paramètres & Profil">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="4" y1="7" x2="20" y2="7"/>
+                <line x1="4" y1="12" x2="14" y2="12"/>
+                <line x1="4" y1="17" x2="18" y2="17"/>
+              </svg>
+            </button>
+
+            <!-- Avatar Profil Client (Silhouette par défaut) -->
+            <div class="client-profile-badge" onclick="window.vomApp.switchScreen('screen-settings')" title="Profil Client">
+              <div class="default-avatar-box client-avatar-container">
+                <span>👤</span>
+              </div>
+              <span class="client-online-dot"></span>
+            </div>
+          </div>
+
+          <!-- Slogan & Titre Officiel VOM FOOD -->
+          <div class="home-greeting-area">
+            <span class="greeting-user">Bonjour, <strong class="user-display-name">Client</strong> 👋</span>
+            <h1 class="headline-main">
+              Chez VOM FOOD
+              <span class="headline-slogan">« Manger n'est pas un luxe, c'est un droit »</span>
+            </h1>
+          </div>
+
+          <!-- Barre de Recherche -->
+          <div class="search-container">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b4513" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input 
+              type="text" 
+              id="searchFoodInput" 
+              class="search-input-field" 
+              placeholder="Rechercher : cuisse, poisson, bananes..."
+            >
+          </div>
+
+          <!-- Bannière Offre Spéciale / Combo du Jour -->
+          <div class="banner-offer-card" onclick="window.vomApp.openDishDetail('vom-10')">
+            <div class="banner-info-left">
+              <div class="badge-limited">🔥 Spécialité Braisée</div>
+              <div class="banner-dish-title">Combo Cuisse Royale</div>
+              <div class="banner-dish-sub">6.500 Fc <span style="font-size:9.5px; font-weight:700; color:#166534; background:#dcfce7; padding:1px 6px; border-radius:6px; margin-left:4px;">Livraison Offerte</span></div>
+              <button class="btn-banner-order">
+                Commander →
+              </button>
+            </div>
+
+            <div class="banner-img-right">
+              <img src="./public/assets/thumb_hero4.jpg" alt="Combo Cuisse Royale">
+            </div>
+          </div>
+
+          <!-- Section Vedette (Tous les plats à 6.500 Fc) -->
+          <div class="section-popular-header">
+            <h2 class="section-popular-title">Vedette (6.500 Fc)</h2>
+            <span class="section-view-all" onclick="window.vomApp.switchScreen('screen-menu')">Voir tout →</span>
+          </div>
+
+          <!-- Grille des Plats Vedette (Format Carré Strict) -->
+          <div id="popularDishesGrid" class="popular-cards-row">
+            <!-- Rempli dynamiquement par JS -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 2. ÉCRAN : COMPOSER MON PLAT SUR MESURE (8.000 FC)       -->
+      <!-- ======================================================== -->
+      <div id="screen-custom-builder" class="screen-view">
+        <div class="detail-screen-container">
+          
+          <div class="detail-top-nav" style="background:#ffffff; border-bottom:1.5px solid var(--c-border); padding:10px 14px; position:relative; top:0; left:0; right:0; justify-content:flex-start; gap:12px;">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-menu')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Plat Personnalisé</h2>
+          </div>
+
+          <div style="flex:1; overflow-y:auto; padding:14px 14px 74px; display:flex; flex-direction:column; gap:12px;">
+            
+            <!-- Étape 1 : Choisir son aliment principal (poulet, poisson…) -->
+            <div class="edit-form-card">
+              <div class="custom-choice-label">1. Choisissez votre aliment principal :</div>
+              <div id="builderMeatsContainer" class="custom-pill-selector"></div>
+            </div>
+
+            <!-- Étape 2 : Choisir l'Accompagnement -->
+            <div class="edit-form-card">
+              <div class="custom-choice-label">2. Choisissez votre accompagnement :</div>
+              <div id="builderSidesContainer" class="custom-pill-selector"></div>
+            </div>
+
+            <!-- Étape 3 : Niveau de Piment -->
+            <div class="edit-form-card">
+              <div class="custom-choice-label">3. Niveau de Piment :</div>
+              <div class="custom-pill-selector">
+                <div class="custom-pill-opt" onclick="window.vomApp.selectCustomOpt('spicy', 'Sans piment (Doux) 🟢', this)">
+                  🟢 Sans Piment (Doux)
+                </div>
+                <div class="custom-pill-opt active" onclick="window.vomApp.selectCustomOpt('spicy', 'Piment Moyen 🟡', this)">
+                  🟡 Piment Moyen
+                </div>
+                <div class="custom-pill-opt" onclick="window.vomApp.selectCustomOpt('spicy', 'Piment Fort Ardent 🔴', this)">
+                  🔴 Piment Fort (Kinois)
+                </div>
+              </div>
+            </div>
+
+            <!-- Étape 4 : Sauces Incluses & Suppléments -->
+            <div class="edit-form-card">
+              <div class="custom-choice-label">4. Sauces Incluses :</div>
+              
+              <div class="toggles-list">
+                <div class="toggle-row">
+                  <span>Sauce maison (choux & oignons)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="bldSauce" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>Mayonnaise</span>
+                  <label class="switch">
+                    <input type="checkbox" id="bldMayo" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>Ketchup</span>
+                  <label class="switch">
+                    <input type="checkbox" id="bldKetchup" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>+ Bananes supplémentaires (+ 1.000 Fc)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="bldExtraBanane">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>+ Shikwague supplémentaire (+ 500 Fc)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="bldExtraShikwague">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-save-edit" style="padding:14px; font-size:14px;" onclick="window.vomApp.addCustomDishToCart()">
+              Ajouter mon Plat Personnalisé (8.000 Fc)
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 3. ÉCRAN PANIER (CART & COMMANDE EN ESPÈCES)             -->
+      <!-- ======================================================== -->
+      <div id="screen-cart" class="screen-view">
+        <div class="cart-screen-container">
+          
+          <div class="cart-header-bar">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-home')" title="Retour">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <h2 class="cart-header-title">Mon Panier</h2>
+            </div>
+            <button class="btn-clear-cart" onclick="window.vomApp.clearCart()">
+              Vider 🗑️
+            </button>
+          </div>
+
+          <div id="cartEmptyView" style="display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;">
+            <div style="font-size:48px; margin-bottom:10px;">🛒</div>
+            <h3 style="font-family:'Playfair Display',serif; font-size:16px; color:var(--c-primary); margin-bottom:4px;">Votre panier est vide</h3>
+            <p style="font-size:12px; color:var(--c-text-muted); margin-bottom:16px;">Tous nos délicieux plats sont à 6.500 Fc avec livraison offerte !</p>
+            <button class="btn-banner-order" onclick="window.vomApp.switchScreen('screen-menu')">
+              Découvrir le Menu →
+            </button>
+          </div>
+
+          <div id="cartContentView" class="cart-scroll-body">
+            
+            <div style="font-size:11.5px; font-weight:800; color:var(--c-primary);">Plats sélectionnés :</div>
+            <div id="cartItemsList" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+            <div class="cart-delivery-card">
+              <div style="font-size:11.5px; font-weight:800; color:var(--c-primary); display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span>🛵</span> Mode de Réception :
+                </div>
+                <span style="font-size:10px; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:10px; font-weight:800;">Livraison Gratuite (0 Fc)</span>
+              </div>
+              <div class="delivery-select-box" style="background:#fff; font-weight:600;">
+                🛵 Livraison à Domicile (0 Fc - Offerte)
+              </div>
+
+              <div style="font-size:11px; color:var(--c-text-muted); display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                <span>📍 <span class="user-display-address">Av. de la Paix N° 45, Réf. Pharmacie</span></span>
+                <span style="color:var(--c-primary); font-weight:700; cursor:pointer;" onclick="window.vomApp.switchScreen('screen-edit-address')">Modifier</span>
+              </div>
+            </div>
+
+            <!-- Instructions cuisine -->
+            <div class="cart-instructions-card">
+              <div id="instructionsHeaderToggle" class="instructions-header-toggle" onclick="window.vomApp.toggleInstructionsDropdown()">
+                <div style="font-size:11.5px; font-weight:800; color:var(--c-primary); display:flex; align-items:center; gap:6px;">
+                  <span>📝</span> Instructions pour la cuisine
+                </div>
+                <span class="instructions-arrow-icon">▼</span>
+              </div>
+
+              <div id="instructionsDropdownBody" class="instructions-dropdown-body">
+                <div style="font-size:10px; color:var(--c-text-muted);">Suggestions rapides de la Cheffe :</div>
+                
+                <div class="chef-suggestions-grid">
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Bien pimenté svp 🌶️', this)">
+                    🌶️ Bien pimenté svp
+                  </div>
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Sans oignons 🚫', this)">
+                    🚫 Sans oignons
+                  </div>
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Sauce à part 📦', this)">
+                    📦 Sauce à part
+                  </div>
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Bananes bien dorées 🍌', this)">
+                    🍌 Bananes bien dorées
+                  </div>
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Cuisse bien croustillante 🍗', this)">
+                    🍗 Cuisse bien croustillante
+                  </div>
+                  <div class="suggestion-chip" onclick="window.vomApp.toggleSuggestionChip('Peu de sel 🧂', this)">
+                    🧂 Peu de sel
+                  </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                  <button type="button" class="btn-custom-instruction" onclick="window.vomApp.toggleCustomNoteInput()">
+                    <span>✏️ Personnaliser mon instruction</span>
+                  </button>
+                </div>
+
+                <div id="customNoteInputArea" style="margin-top:2px; display:none;">
+                  <input 
+                    type="text" 
+                    id="cartCustomerNote" 
+                    class="delivery-select-box" 
+                    placeholder="Écrivez votre consigne spéciale..."
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Paiement -->
+            <div class="cart-delivery-card">
+              <div style="font-size:11.5px; font-weight:800; color:var(--c-primary); display:flex; align-items:center; gap:6px;">
+                <span>💵</span> Moyen de Paiement :
+              </div>
+              <div style="font-size:11px; font-weight:700; color:var(--c-text); background:var(--c-accent-light); padding:8px 10px; border-radius:10px; display:flex; align-items:center; gap:6px;">
+                <span>💵</span> Paiement par transfert (Mobile Money / bancaire)
+              </div>
+              <div id="cartMobileMoneyInfo" style="display:none; flex-direction:column; gap:4px; font-size:11px; color:var(--c-text); background:#fffaf2; border:1.5px solid var(--c-accent); padding:8px 10px; border-radius:10px;"></div>
+            </div>
+
+            <!-- Récapitulatif Facture -->
+            <div class="cart-bill-card">
+              <div class="bill-row">
+                <span>Sous-total des plats :</span>
+                <strong id="cartSubtotalValue" style="color:var(--c-text);">6.500 Fc</strong>
+              </div>
+              <div class="bill-row">
+                <span>Frais de livraison :</span>
+                <strong id="cartDeliveryFeeValue" style="color:#166534;">0 Fc (Gratuit 🎉)</strong>
+              </div>
+              <div class="bill-total-row">
+                <span>TOTAL À PAYER :</span>
+                <span id="cartTotalFinalValue" class="bill-total-val">6.500 Fc</span>
+              </div>
+            </div>
+
+            <button class="btn-whatsapp-order" onclick="window.vomApp.submitOrderWhatsApp()">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.54 1.861.855 2.796.855 3.18 0 5.767-2.587 5.767-5.766.001-3.18-2.585-5.742-5.767-5.742zm9.969 5.766c0 5.514-4.486 10-10 10-1.802 0-3.486-.481-4.945-1.319l-5.055 1.321 1.34-4.908c-.928-1.508-1.465-3.282-1.465-5.094 0-5.514 4.486-10 10-10s10 4.486 10 10z"/></svg>
+              <span>Commander via WhatsApp (<span id="cartBtnTotalPrice">6.500 Fc</span>)</span>
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 4. ÉCRAN DÉTAIL PLAT, PERSONNALISATION & AVIS CLIENTS    -->
+      <!-- ======================================================== -->
+      <div id="screen-detail" class="screen-view">
+        <div class="detail-screen-container">
+
+          <div class="detail-hero-backdrop">
+            <img id="detailHeroImg" src="./public/assets/hero4.jpg" alt="Plat Sélectionné">
+            
+            <div class="detail-top-nav">
+              <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-home')" title="Retour">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div id="detailFavBtn" class="btn-icon-round" onclick="window.vomApp.toggleFavorite(window.vomApp.selectedDish?.id)" title="Favori">
+                ❤️
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-sheet-card">
+            
+            <div>
+              <span class="tag-spicy" style="display:inline-block; margin-bottom: 6px;">🔥 Fait Maison & Braisé</span>
+              
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <h2 id="detailTitle" class="detail-dish-title">Combo Cuisse Royale</h2>
+                <div id="detailPrice" class="detail-dish-price">6.500 Fc</div>
+              </div>
+            </div>
+
+            <p id="detailDesc" class="detail-dish-description">
+              Cuisse de poulet marinée aux épices kinois et dorée au feu de braise, servie avec bananes plantains et frites croustillantes.
+            </p>
+
+            <!-- Personnalisation Piment -->
+            <div class="edit-form-card" style="padding:10px;">
+              <div class="custom-choice-label">Niveau de Piment :</div>
+              <div style="display:flex; gap:8px; font-size:11.5px; margin-top:4px;">
+                <label><input type="radio" name="detailPiment" value="Doux 🟢"> Doux 🟢</label>
+                <label><input type="radio" name="detailPiment" value="Moyen 🟡" checked> Moyen 🟡</label>
+                <label><input type="radio" name="detailPiment" value="Fort 🔴"> Fort 🔴</label>
+              </div>
+            </div>
+
+            <!-- Interrupteurs Sauces & Suppléments -->
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: var(--c-primary); margin-bottom: 6px;">Garnitures & Sauces :</div>
+              
+              <div class="toggles-list">
+                <div class="toggle-row">
+                  <span>Sauce maison (choux & oignons)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggleChoux" class="toggle-custom-input" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>Mayonnaise maison</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggleMayo" class="toggle-custom-input" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>Ketchup</span>
+                  <label class="switch">
+                    <input type="checkbox" id="togglePiment" class="toggle-custom-input" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>+ Bananes supplémentaires (+ 1.000 Fc)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggleExtraBanane" class="toggle-custom-input">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="toggle-row">
+                  <span>+ Shikwague supplémentaire (+ 500 Fc)</span>
+                  <label class="switch">
+                    <input type="checkbox" id="toggleExtraShikwague" class="toggle-custom-input">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Avis des Clients sur ce Plat -->
+            <div class="reviews-section-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:13px; font-weight:800; color:var(--c-primary);">⭐ Avis des Clients</div>
+                <span id="detailReviewsCount" style="font-size:11px; color:var(--c-text-muted);"></span>
+              </div>
+
+              <div style="font-size:11.5px; font-weight:700; color:var(--c-text);">Votre note :</div>
+              <div class="stars-rating-selector" id="reviewStarsPicker">
+                <span class="rating-star-pick" data-star="1" onclick="window.vomApp.selectRatingStar(1)">★</span>
+                <span class="rating-star-pick" data-star="2" onclick="window.vomApp.selectRatingStar(2)">★</span>
+                <span class="rating-star-pick" data-star="3" onclick="window.vomApp.selectRatingStar(3)">★</span>
+                <span class="rating-star-pick" data-star="4" onclick="window.vomApp.selectRatingStar(4)">★</span>
+                <span class="rating-star-pick" data-star="5" onclick="window.vomApp.selectRatingStar(5)">★</span>
+              </div>
+
+              <textarea id="reviewCommentInput" rows="2" placeholder="Partagez votre expérience avec ce plat..."
+                style="width:100%; border:1.5px solid var(--c-border); border-radius:12px; padding:10px 12px; font-size:12px; font-family:inherit; color:var(--c-text); background:#fdf9f3; resize:none; outline:none; box-sizing:border-box;"></textarea>
+
+              <button class="btn-add-to-cart" style="justify-content:center; width:100%;" onclick="window.vomApp.submitDishReview()">
+                <span>Publier mon avis ⭐</span>
+              </button>
+
+              <div id="dishReviewsList" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+
+          </div>
+
+          <div class="detail-bottom-bar">
+            <div class="qty-counter-box">
+              <button class="btn-qty" onclick="window.vomApp.changeQty(-1)">−</button>
+              <span id="detailQtyCount" class="qty-number">1</span>
+              <button class="btn-qty" onclick="window.vomApp.changeQty(1)">+</button>
+            </div>
+
+            <button class="btn-add-to-cart" onclick="window.vomApp.confirmAddToCart()">
+              <span>Ajouter au Panier</span>
+              <span id="detailTotalBtnPrice">6.500 Fc</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 5. ÉCRAN MENU DES PARAMÈTRES & OPTIONS DU COMPTE         -->
+      <!-- ======================================================== -->
+      <div id="screen-settings" class="screen-view">
+        <div class="settings-screen-container">
+          
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-home')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Paramètres & Profil</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            
+            <div class="settings-profile-card">
+              <div class="settings-profile-avatar-box client-avatar-container">
+                <span>👤</span>
+              </div>
+              <div class="settings-profile-info">
+                <div class="settings-user-name user-display-name">Client</div>
+                <div class="settings-user-phone user-display-phone"></div>
+              </div>
+            </div>
+
+            <div class="settings-menu-list">
+              
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-edit-profile')">
+                <div class="settings-menu-icon">👤</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Informations Personnelles</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-edit-address')">
+                <div class="settings-menu-icon">📍</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Adresse de Livraison</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-orders')">
+                <div class="settings-menu-icon">📦</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Mes Commandes & Suivi</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-favorites')">
+                <div class="settings-menu-icon">❤️</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Mes Favoris</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-app-settings')">
+                <div class="settings-menu-icon">⚙️</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Paramètres</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-support')">
+                <div class="settings-menu-icon">🛟</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">Support & Aide</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+              <div class="settings-menu-row" onclick="window.vomApp.switchScreen('screen-about')">
+                <div class="settings-menu-icon">ℹ️</div>
+                <div class="settings-menu-content">
+                  <div class="settings-menu-title">À Propos</div>
+                </div>
+                <div class="settings-menu-arrow">›</div>
+              </div>
+
+            </div>
+
+            <button class="btn-logout" onclick="window.vomApp.logout()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Se déconnecter</span>
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 6. SOUS-ÉCRAN : INFORMATIONS PERSONNELLES                -->
+      <!-- ======================================================== -->
+      <div id="screen-edit-profile" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Informations Personnelles</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            <div class="edit-form-card">
+              
+              <div class="avatar-picker-center">
+                <input type="file" id="avatarFileInput" accept="image/*" style="display: none;">
+                
+                <div id="avatarEditPreview" class="avatar-upload-trigger" onclick="document.getElementById('avatarFileInput').click()" title="Changer la photo">
+                  <span style="font-size: 26px;">👤</span>
+                  <span class="avatar-camera-badge">📷 Modifier</span>
+                </div>
+                <span style="font-size: 10.5px; color: var(--c-primary); font-weight: 700; cursor: pointer;" onclick="document.getElementById('avatarFileInput').click()">
+                  Photo de profil (cliquez pour importer)
+                </span>
+              </div>
+
+              <div class="form-edit-group">
+                <label class="form-edit-label">Nom complet :</label>
+                <input type="text" id="editClientName" class="form-edit-input" placeholder="Ex: Marie M." value="">
+              </div>
+
+              <div class="form-edit-group">
+                <label class="form-edit-label">Modifier l'adresse e-mail :</label>
+                <input type="email" id="editClientEmail" class="form-edit-input" placeholder="Ex: nom@email.com" value="">
+              </div>
+
+              <div class="form-edit-group">
+                <label class="form-edit-label">Modifier le numéro de téléphone :</label>
+                <input type="text" id="editClientPhone" class="form-edit-input" placeholder="Ex: +243 81 234 5678" value="">
+              </div>
+
+              <div style="border-top: 1px solid var(--c-accent-light); margin-top: 4px; padding-top: 8px;">
+                <label class="form-edit-label" style="margin-bottom: 6px; display:block;">🔒 Changer de mot de passe :</label>
+                
+                <div class="form-edit-group" style="margin-bottom: 6px;">
+                  <input type="password" id="editClientNewPassword" class="form-edit-input" placeholder="Nouveau mot de passe">
+                </div>
+
+                <div class="form-edit-group">
+                  <input type="password" id="editClientConfirmPassword" class="form-edit-input" placeholder="Confirmer le nouveau mot de passe">
+                </div>
+              </div>
+
+              <button class="btn-save-edit" onclick="window.vomApp.saveProfile()">
+                Enregistrer les modifications
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 7. SOUS-ÉCRAN : ADRESSES DE LIVRAISON                    -->
+      <!-- ======================================================== -->
+      <div id="screen-edit-address" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Adresses de Livraison</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            
+            <div style="font-size: 11.5px; font-weight: 800; color: var(--c-primary);">Adresses enregistrées :</div>
+            <div id="addressListContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+            <div class="edit-form-card" style="margin-top: 6px;">
+              <div style="font-size: 11.5px; font-weight: 800; color: var(--c-primary);">➕ Ajouter une adresse :</div>
+              
+              <div class="form-edit-group">
+                <label class="form-edit-label">Nom du lieu :</label>
+                <input type="text" id="newAddrLabel" class="form-edit-input" placeholder="Ex: Maison, Bureau, Chez un ami">
+              </div>
+
+              <div class="form-edit-group">
+                <label class="form-edit-label">Adresse complète :</label>
+                <input type="text" id="newAddrText" class="form-edit-input" placeholder="Ex: Av. de la Paix N° 45, Réf. Pharmacie">
+              </div>
+
+              <button class="btn-save-edit" onclick="window.vomApp.addNewAddress()">
+                Ajouter cette adresse (Livraison Gratuite)
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 8. SOUS-ÉCRAN : PARAMÈTRES                               -->
+      <!-- ======================================================== -->
+      <div id="screen-app-settings" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Paramètres</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            <div class="edit-form-card">
+              
+              <div class="toggle-row">
+                <div>
+                  <div style="font-weight:700;">Notifications de commande</div>
+                  <div style="font-size:10px; color:var(--c-text-muted);">Suivi en temps réel de votre commande</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingNotifOrder" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div style="font-weight:700;">Confirmation de commande</div>
+                  <div style="font-size:10px; color:var(--c-text-muted);">Alerte sonore et reçu immédiat</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingOrderConfirm" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div style="font-weight:700;">Promotions et réductions</div>
+                  <div style="font-size:10px; color:var(--c-text-muted);">Offres spéciales et combos du jour</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingPromos" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div style="font-weight:700;">Sons de l'application</div>
+                  <div style="font-size:10px; color:var(--c-text-muted);">Effets sonores des boutons</div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingSounds" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <button class="btn-save-edit" onclick="window.vomApp.saveAppSettings()">
+                Enregistrer les paramètres
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 9. SOUS-ÉCRAN : SUPPORT & AIDE                           -->
+      <!-- ======================================================== -->
+      <div id="screen-support" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Support & Aide</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            
+            <div class="edit-form-card">
+              <div style="font-size:12px; font-weight:800; color:var(--c-primary);">📞 Contacter VOM FOOD</div>
+              <p style="font-size:11px; color:var(--c-text-muted);">Notre équipe et Cheffe Vom sont à votre écoute pour toute question.</p>
+              <a href="https://wa.me/243895968355" target="_blank" class="btn-banner-order" style="text-align:center; text-decoration:none; display:block; padding:10px;">
+                💬 Discuter sur WhatsApp (+243 895 968 355)
+              </a>
+            </div>
+
+            <div class="edit-form-card">
+              <div style="font-size:12px; font-weight:800; color:var(--c-primary);">❓ Questions Fréquentes (FAQ)</div>
+              
+              <div class="faq-item">
+                <div class="faq-question">Quand passer commande ?</div>
+                <div class="faq-answer">• Les commandes sont ouvertes du <strong class="display-order-days">Lundi au Jeudi</strong>.</div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">Quels sont les jours de livraison ?</div>
+                <div class="faq-answer">• Les livraisons se font tout chaud le <strong class="display-delivery-days">Vendredi et Samedi</strong>.</div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">Combien coûte la livraison et les plats ?</div>
+                <div class="faq-answer">• Les plats sont à <strong>6.500 Fc</strong> (plat sur mesure à <strong>8.000 Fc</strong>) et la livraison est <strong>Gratuite (0 Fc)</strong> !</div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">Comment payer ma commande ?</div>
+                <div class="faq-answer">• Le paiement se fait <strong>par transfert</strong> (Mobile Money : Airtel, Orange, M-Pesa) ou en espèces à la réception. Les numéros sont affichés dans votre panier.</div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">Comment retrouver mon compte ?</div>
+                <div class="faq-answer">• Votre compte reste ouvert sur votre téléphone. Si vous vous déconnectez, reconnectez-vous avec votre <strong>téléphone ou e-mail</strong> et votre mot de passe.</div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">Comment suivre ma commande ?</div>
+                <div class="faq-answer">• Allez dans l'onglet <strong>Commandes</strong> : le statut (préparation, livraison, livrée…) se met à jour en direct.</div>
+              </div>
+            </div>
+
+            <div class="edit-form-card">
+              <div style="font-size:12px; font-weight:800; color:var(--c-primary);">⚠️ Signaler un Problème</div>
+              
+              <div class="form-edit-group">
+                <label class="form-edit-label">Motif du signalement :</label>
+                <select id="supportProblemTopic" class="form-edit-input" style="background:#fff;">
+                  <option value="Problème de livraison">Problème de livraison</option>
+                  <option value="Plat non conforme">Plat ou commande non conforme</option>
+                  <option value="Question sur le paiement">Question sur le paiement</option>
+                  <option value="Autre demande">Autre demande</option>
+                </select>
+              </div>
+
+              <div class="form-edit-group">
+                <label class="form-edit-label">Description du problème :</label>
+                <textarea id="supportProblemDesc" class="form-edit-input" rows="3" placeholder="Expliquez brièvement le souci rencontré..."></textarea>
+              </div>
+
+              <button class="btn-save-edit" onclick="window.vomApp.submitProblemReport()">
+                Envoyer le signalement
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 10. SOUS-ÉCRAN : À PROPOS                                -->
+      <!-- ======================================================== -->
+      <div id="screen-about" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">À Propos</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            
+            <div class="edit-form-card">
+              <h3 style="font-family:'Playfair Display',serif; font-size:16px; color:var(--c-primary);">VOM FOOD</h3>
+              <p style="font-size:12px; color:var(--c-text-muted); line-height:1.45;">
+                « Manger n'est pas un luxe, c'est un droit. » Cuisine passionnée, grillades kinois et plats authentiques préparés à la commande.
+              </p>
+            </div>
+
+            <div class="edit-form-card" style="font-size:12px; gap:8px;">
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--c-accent-light); padding-bottom:6px;">
+                <span style="font-weight:700;">Version de l'application :</span>
+                <span style="color:var(--c-primary); font-weight:800;">VOM FOOD PWA v1.0.0</span>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--c-accent-light); padding-bottom:6px; cursor:pointer;" onclick="alert('Conditions : Commandes du Lun au Jeu, Livraisons Ven et Sam.')">
+                <span style="font-weight:700;">📄 Conditions d'utilisation</span>
+                <span style="color:var(--c-accent);">›</span>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--c-accent-light); padding-bottom:6px; cursor:pointer;" onclick="alert('Politique de confidentialité : Vos coordonnées sont strictement réservées à la livraison de vos commandes.')">
+                <span style="font-weight:700;">🛡️ Politique de confidentialité</span>
+                <span style="color:var(--c-accent);">›</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 11. SOUS-ÉCRAN : MES COMMANDES & SUIVI                   -->
+      <!-- ======================================================== -->
+      <div id="screen-orders" class="screen-view">
+        <div class="settings-screen-container">
+          <div class="settings-header">
+            <button class="btn-icon-round" onclick="window.vomApp.switchScreen('screen-settings')" title="Retour">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2 style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--c-primary);">Mes Commandes & Suivi</h2>
+          </div>
+
+          <div class="settings-scroll-body">
+            
+            <!-- Liste dynamique des commandes du client -->
+            <div id="clientOrdersContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+            <div class="edit-form-card" style="font-size:11.5px; color:var(--c-text-muted);">
+              <strong>🛵 Jours & Horaires de Livraison :</strong><br>
+              • Commandes ouvertes : <strong class="display-order-days">Lundi au Jeudi</strong><br>
+              • Livraisons assurées : <strong class="display-delivery-days">Vendredi & Samedi</strong><br>
+              • Frais de livraison : <strong style="color:#166534;">100% Gratuite (0 Fc)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 12. ÉCRAN MENU COMPLET & PLAT SUR MESURE                 -->
+      <!-- ======================================================== -->
+      <div id="screen-menu" class="screen-view">
+        <div class="home-container">
+          <div class="home-greeting-area">
+            <h1 class="headline-main">Notre Menu Complet</h1>
+            <p style="font-size:12px; color:var(--c-text-muted);">Plats standards à 6.500 Fc • Plat sur mesure à 8.000 Fc</p>
+          </div>
+
+          <!-- BANNIÈRE : COMPOSER MON PLAT SUR MESURE (8.000 FC) -->
+          <div id="customDishBanner" class="custom-dish-banner" onclick="window.vomApp.openCustomBuilder()" style="margin-bottom: 6px;">
+            <div style="flex:1;">
+              <div style="font-size:10px; font-weight:800; color:var(--c-primary); text-transform:uppercase;">🎨 Assiette sur Mesure</div>
+              <div style="font-size:13.5px; font-weight:800; color:var(--c-text);">Composer mon Plat Personnalisé</div>
+              <div style="font-size:10.5px; color:var(--c-text-muted);">Choisissez votre grillade, garnitures et sauces • <strong>8.000 Fc</strong></div>
+            </div>
+            <span style="font-size:24px; padding-left:8px;">🍗🍌</span>
+          </div>
+
+          <div id="fullMenuGrid" class="popular-cards-row">
+            <!-- Rempli dynamiquement -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 13. ÉCRAN FAVORIS                                        -->
+      <!-- ======================================================== -->
+      <div id="screen-favorites" class="screen-view">
+        <div class="home-container">
+          <div class="home-greeting-area">
+            <h1 class="headline-main">Mes Favoris ❤️</h1>
+            <p style="font-size:12px; color:var(--c-text-muted);">Vos plats préférés enregistrés</p>
+          </div>
+
+          <div id="favoritesGrid" class="popular-cards-row">
+            <!-- Rempli dynamiquement -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 14. ÉCRAN DISCUSSIONS (CHAT CLIENT - ADMIN)              -->
+      <!-- ======================================================== -->
+      <div id="screen-chat" class="screen-view">
+        <div class="chat-screen-container">
+          
+          <div class="chat-top-header">
+            <img src="./public/assets/chef.jpg" alt="Gérante VOM FOOD" class="chat-manager-avatar">
+            <div class="chat-manager-info">
+              <div class="chat-manager-name">Gérante VOM FOOD</div>
+              <div class="chat-manager-status">
+                <span style="width:7px; height:7px; background:#22c55e; border-radius:50%;"></span>
+                En ligne • Répond rapidement
+              </div>
+            </div>
+          </div>
+
+          <div id="chatMessagesBox" class="chat-messages-scroll">
+            <div class="bubble bubble-received">
+              Bonjour ! Bienvenue chez VOM FOOD. Tous nos plats sont à 6.500 Fc (plat sur mesure à 8.000 Fc) avec livraison offerte ! Comment puis-je vous aider ? 🍗✨
+            </div>
+            <div class="bubble bubble-sent">
+              Bonjour, les livraisons se font toujours vendredi et samedi ?
+            </div>
+            <div class="bubble bubble-received">
+              <strong>Gérante VOM FOOD :</strong><br>
+              Exactement ! Vous commandez du lundi au jeudi et nous vous livrons tout chaud vendredi et samedi à Mbanza-Ngungu et Kinshasa !
+            </div>
+          </div>
+
+          <div class="chat-input-bar">
+            <input 
+              type="text" 
+              id="chatInput" 
+              class="chat-input-field" 
+              placeholder="Écrivez votre message à la gérante..."
+            >
+            <button id="btnSendChat" class="btn-send-msg">Envoyer</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barre de Navigation Basse (4 Onglets : Accueil, Menu, Panier, Discussions) -->
+    <nav id="bottomNav" class="bottom-nav-bar">
+      <!-- 1. Accueil -->
+      <div class="nav-tab-btn active" data-screen="screen-home" onclick="window.vomApp.switchScreen('screen-home')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Accueil</span>
+      </div>
+
+      <!-- 2. Menu -->
+      <div class="nav-tab-btn" data-screen="screen-menu" onclick="window.vomApp.switchScreen('screen-menu')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        <span>Menu</span>
+      </div>
+
+      <!-- 3. Panier -->
+      <div class="nav-tab-btn" data-screen="screen-cart" onclick="window.vomApp.switchScreen('screen-cart')">
+        <div style="position:relative;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          <span id="cartNavCount" style="position:absolute; top:-5px; right:-8px; background:#8b4513; color:#fff; font-size:9px; font-weight:800; border-radius:50%; width:15px; height:15px; display:flex; align-items:center; justify-content:center;">1</span>
+        </div>
+        <span>Panier</span>
+      </div>
+
+      <!-- 4. Discussions -->
+      <div class="nav-tab-btn" data-screen="screen-chat" onclick="window.vomApp.switchScreen('screen-chat')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Discussions</span>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <script src="./js/sync.js"></script>
+  <script src="./js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[VOM FOOD PWA] Service Worker actif :', reg.scope))
+          .catch(err => console.log('[VOM FOOD PWA] Erreur Service Worker :', err));
+      });
+    }
+  </script>
+</body>
+</html>

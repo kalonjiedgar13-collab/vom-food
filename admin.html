@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>VOM FOOD - Espace Administrateur Gérante</title>
+
+  <!-- PWA & Web App Meta Tags -->
+  <meta name="theme-color" content="#8b4513">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VOM FOOD Admin">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="./public/icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.png">
+
+  <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ======================================================== -->
+  <!-- PROTECTION : l'admin n'est accessible QUE via la page    -->
+  <!-- de connexion normale (identifiant gérante + PIN).        -->
+  <!-- Accès direct à admin.html → redirection vers connexion.  -->
+  <!-- ======================================================== -->
+  <script>
+    if (sessionStorage.getItem('vom_admin_ok') !== '1') {
+      location.replace('./connexion.html');
+    }
+  </script>
+
+  <div class="admin-app-layout">
+
+    <!-- ======================================================== -->
+    <!-- SIDEBAR DE NAVIGATION GLOBALE                            -->
+    <!-- ======================================================== -->
+    <aside id="adminSidebar" class="admin-sidebar">
+      
+      <!-- Brand & Cheffe Vom -->
+      <div class="admin-sidebar-brand">
+        <div class="brand-avatar-box">
+          <img src="./public/assets/chef.jpg" alt="Cheffe Vom">
+        </div>
+        <div class="brand-title-box">
+          <h1>Cheffe Vom</h1>
+          <span>👑 Espace Gérante</span>
+        </div>
+      </div>
+
+      <!-- Liste des modules de navigation -->
+      <ul class="admin-nav-list">
+        
+        <li class="admin-nav-heading">Vue Générale</li>
+        <li>
+          <button class="admin-nav-btn active" data-tab="dashboard" onclick="window.vomAdmin.switchTab('dashboard')">
+            <span class="nav-left-part">
+              <span class="nav-icon">🏠</span>
+              <span>Dashboard</span>
+            </span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="chat" onclick="window.vomAdmin.switchTab('chat')">
+            <span class="nav-left-part">
+              <span class="nav-icon">💬</span>
+              <span>Discussions</span>
+            </span>
+            <span id="navChatBadge" class="nav-badge badge-danger" style="display:none;">0</span>
+          </button>
+        </li>
+
+        <li class="admin-nav-heading">Gestion Restaurant</li>
+        <li>
+          <button class="admin-nav-btn" data-tab="orders" onclick="window.vomAdmin.switchTab('orders')">
+            <span class="nav-left-part">
+              <span class="nav-icon">📦</span>
+              <span>Commandes</span>
+            </span>
+            <span id="navOrdersBadge" class="nav-badge">0</span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="menu" onclick="window.vomAdmin.switchTab('menu')">
+            <span class="nav-left-part">
+              <span class="nav-icon">🍔</span>
+              <span>Menu (Plats)</span>
+            </span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="categories" onclick="window.vomAdmin.switchTab('categories')">
+            <span class="nav-left-part">
+              <span class="nav-icon">📂</span>
+              <span>Catégories</span>
+            </span>
+          </button>
+        </li>
+
+        <li class="admin-nav-heading">Performances & Fidélité</li>
+        <li>
+          <button class="admin-nav-btn" data-tab="stats" onclick="window.vomAdmin.switchTab('stats')">
+            <span class="nav-left-part">
+              <span class="nav-icon">📊</span>
+              <span>Statistiques</span>
+            </span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="promotions" onclick="window.vomAdmin.switchTab('promotions')">
+            <span class="nav-left-part">
+              <span class="nav-icon">🎟️</span>
+              <span>Promotions</span>
+            </span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="avis" onclick="window.vomAdmin.switchTab('avis')">
+            <span class="nav-left-part">
+              <span class="nav-icon">⭐</span>
+              <span>Avis Clients</span>
+            </span>
+          </button>
+        </li>
+
+        <li class="admin-nav-heading">Configuration</li>
+        <li>
+          <button class="admin-nav-btn" data-tab="help" onclick="window.vomAdmin.switchTab('help')">
+            <span class="nav-left-part">
+              <span class="nav-icon">❓</span>
+              <span>Aide & Guide</span>
+            </span>
+          </button>
+        </li>
+
+        <li>
+          <button class="admin-nav-btn" data-tab="settings" onclick="window.vomAdmin.switchTab('settings')">
+            <span class="nav-left-part">
+              <span class="nav-icon">⚙️</span>
+              <span>Paramètres</span>
+            </span>
+          </button>
+        </li>
+
+      </ul>
+
+      <!-- Actions Rapides Pied Sidebar -->
+      <div class="sidebar-bottom-actions">
+        <button class="adm-btn adm-btn-danger" style="width:100%; font-size:11.5px;" onclick="window.vomAdmin.logoutAdmin()">
+          🔒 Déconnexion Admin
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================== -->
+    <!-- ZONE PRINCIPALE ET EN-TÊTE SUPÉRIEUR                     -->
+    <!-- ======================================================== -->
+    <main class="admin-main-wrapper">
+      
+      <!-- Topbar Header -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="btn-mobile-menu" onclick="window.vomAdmin.toggleSidebarMobile()" title="Menu">
+            ☰
+          </button>
+          <h2 id="topbarPageTitle" class="topbar-page-title">🏠 Tableau de Bord & Vue d'Ensemble</h2>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Statut restaurant pill -->
+          <div class="restaurant-status-badge">
+            <span id="topbarRestaurantStatus">🟢 Ouvert</span>
+            <label class="adm-switch" style="transform:scale(0.8);">
+              <input type="checkbox" id="restaurantStatusSwitch" checked onchange="window.vomAdmin.toggleRestaurantStatus(this.checked)">
+              <span class="adm-switch-slider"></span>
+            </label>
+          </div>
+
+          <button class="btn-topbar-action btn-topbar-primary" onclick="window.vomAdmin.openAddDishModal()">
+            <span>➕</span> <span>Ajouter Plat</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Contenu Défilant des Vues / Onglets -->
+      <div class="admin-content-area">
+
+        <!-- ======================================================== -->
+        <!-- 1. ONGLET : DASHBOARD                                    -->
+        <!-- ======================================================== -->
+        <section id="view-dashboard" class="adm-view-panel active">
+          
+          <!-- Carte Statut Restaurant & Horaires -->
+          <div class="adm-card" style="background:linear-gradient(135deg, #ffffff 0%, #fdf9f3 100%); border-left:5px solid var(--adm-primary);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div>
+                <div style="font-size:12px; font-weight:800; color:var(--adm-primary); text-transform:uppercase; letter-spacing:0.5px;">Statut Actuel du Restaurant :</div>
+                <div id="restaurantStatusText" style="font-size:16px; font-weight:900; color:var(--adm-success); margin-top:2px;">🟢 Ouvert aux commandes</div>
+                <div style="font-size:12px; color:var(--adm-text-muted); margin-top:4px;">
+                  Commandes ouvertes : <strong>Lundi au Jeudi</strong> • Livraisons gratuites : <strong>Vendredi et Samedi</strong>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:8px;">
+                <button class="adm-btn adm-btn-secondary adm-btn-sm" onclick="window.vomAdmin.switchTab('chat')">
+                  💬 Ouvrir Chat Direct
+                </button>
+                <button class="adm-btn adm-btn-primary adm-btn-sm" onclick="window.vomAdmin.switchTab('orders')">
+                  📦 Gérer Commandes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grille des KPIs Clés -->
+          <div class="adm-kpi-grid">
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Ventes Totales</span>
+                <span class="kpi-icon-pill">💰</span>
+              </div>
+              <span id="kpiTotalRevenue" class="kpi-value">0 Fc</span>
+              <span class="kpi-trend trend-up">Calculé en temps réel</span>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Commandes</span>
+                <span class="kpi-icon-pill">📦</span>
+              </div>
+              <span id="kpiOrdersCount" class="kpi-value">0</span>
+              <span class="kpi-trend trend-up">Suivi en direct</span>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Plats au Menu</span>
+                <span class="kpi-icon-pill">🍗</span>
+              </div>
+              <span id="kpiDishesCount" class="kpi-value">0</span>
+              <span class="kpi-trend trend-neutral">● Prix unique pour tous</span>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Messages Non Lus</span>
+                <span class="kpi-icon-pill">💬</span>
+              </div>
+              <span id="kpiUnreadChat" class="kpi-value">0</span>
+              <span class="kpi-trend trend-up">💬 Réponse en direct</span>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Frais Livraison</span>
+                <span class="kpi-icon-pill">🛵</span>
+              </div>
+              <span id="kpiDeliveryStatus" class="kpi-value" style="color:var(--adm-success);">0 Fc</span>
+              <span class="kpi-trend trend-up">🎉 Livraison offerte</span>
+            </div>
+
+            <div class="adm-kpi-card">
+              <div class="kpi-top-row">
+                <span class="kpi-label">Note Moyenne</span>
+                <span class="kpi-icon-pill">⭐</span>
+              </div>
+              <span id="kpiAvgRating" class="kpi-value" style="color:#f59e0b;">—</span>
+              <span id="kpiReviewsCount" class="kpi-trend trend-neutral">Aucun avis pour le moment</span>
+            </div>
+          </div>
+
+          <!-- Section Commandes Récentes -->
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">📦 Dernières Commandes Reçues</h3>
+                <span class="adm-card-subtitle">Mise à jour en temps réel des commandes clients</span>
+              </div>
+              <button class="adm-btn adm-btn-secondary adm-btn-sm" onclick="window.vomAdmin.switchTab('orders')">
+                Voir toutes les commandes →
+              </button>
+            </div>
+            <div id="dashRecentOrdersList" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+
+          <!-- Section Raccourcis Rapides -->
+          <div class="adm-card">
+            <h3 class="adm-card-title">⚡ Actions Rapides</h3>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+              <button class="adm-btn adm-btn-secondary" style="padding:12px;" onclick="window.vomAdmin.openAddDishModal()">
+                ➕ Ajouter une Grillade au Menu
+              </button>
+              <button class="adm-btn adm-btn-secondary" style="padding:12px;" onclick="window.vomAdmin.switchTab('chat')">
+                💬 Répondre aux Clients en direct
+              </button>
+              <button class="adm-btn adm-btn-secondary" style="padding:12px;" onclick="window.vomAdmin.switchTab('promotions')">
+                🎟️ Lancer une Promotion
+              </button>
+              <button class="adm-btn adm-btn-secondary" style="padding:12px;" onclick="window.vomAdmin.switchTab('settings')">
+                ⚙️ Ajuster Horaires & Coordonnées
+              </button>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 2. ONGLET : DISCUSSIONS DIRECTES AVEC CLIENTS (LIVE CHAT)-->
+        <!-- ======================================================== -->
+        <section id="view-chat" class="adm-view-panel">
+          
+          <div class="adm-card" style="padding:0; overflow:hidden;">
+            <div class="chat-module-grid">
+              
+              <!-- Colonne Gauche : Liste des conversations clients -->
+              <div class="chat-threads-sidebar">
+                <div class="chat-search-bar">
+                  <div style="font-size:12px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">💬 Conversations Clients</div>
+                  <input type="text" id="chatFilterInput" class="adm-input" placeholder="🔍 Rechercher un client..." style="font-size:12px; padding:6px 10px;">
+                </div>
+                <div id="chatThreadsList" class="threads-scroll-list"></div>
+              </div>
+
+              <!-- Colonne Droite : Fil de discussion actif -->
+              <div class="chat-active-window">
+                
+                <!-- Header discussion active -->
+                <div class="chat-active-header">
+                  <div class="chat-customer-info">
+                    <div id="chatActiveCustomerAvatar" class="thread-avatar">👤</div>
+                    <div>
+                      <div id="chatActiveCustomerName" style="font-size:13.5px; font-weight:800; color:var(--adm-text);">Client</div>
+                      <div id="chatActiveCustomerPhone" style="font-size:11px; color:var(--adm-text-muted);">081 ...</div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; gap:6px;">
+                    <a href="tel:+243812345678" class="adm-btn adm-btn-secondary adm-btn-sm" title="Appeler">📞 Appeler</a>
+                    <button class="adm-btn adm-btn-secondary adm-btn-sm" onclick="window.vomAdmin.switchTab('orders')" title="Voir commandes">📦 Commandes</button>
+                  </div>
+                </div>
+
+                <!-- Fil des messages -->
+                <div id="chatMessagesScroll" class="chat-messages-container"></div>
+
+                <!-- Réponses rapides prédéfinies (1 clic) -->
+                <div class="chat-canned-bar">
+                  <span style="font-size:10px; font-weight:800; color:var(--adm-text-muted); align-self:center;">RÉPONSES RAPIDES :</span>
+                  <span class="canned-chip" onclick="window.vomAdmin.sendCannedMessage('Bonjour ! Nos plats sont à 6.500 Fc, livraison offerte sur Kinshasa et Mbanza-Ngungu. Comment pouvons-nous vous aider ? 🍗')">🍗 Prix 6.500 Fc & Livraison</span>
+                  <span class="canned-chip" onclick="window.vomAdmin.sendCannedMessage('Votre commande est confirmée et en cours de préparation sur notre grill 🔥')">🔥 En préparation</span>
+                  <span class="canned-chip" onclick="window.vomAdmin.sendCannedMessage('Votre commande est en cours de livraison vers votre adresse 🛵')">🛵 En cours de livraison</span>
+                  <span class="canned-chip" onclick="window.vomAdmin.sendCannedMessage('Merci de nous préciser votre avenue et un point de repère pour la livraison 📍')">📍 Demander Référence</span>
+                  <span class="canned-chip" onclick="window.vomAdmin.sendCannedMessage('Merci pour votre confiance. Bon appétit et à très bientôt chez VOM FOOD ! ✨')">✨ Remerciement</span>
+                </div>
+
+                <!-- Zone de saisie message -->
+                <div class="chat-input-row">
+                  <input type="text" id="adminChatInput" class="adm-input" placeholder="Rédiger votre réponse en tant que Cheffe Vom...">
+                  <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.sendAdminChatMessage()">
+                    <span>Envoyer</span> <span>📨</span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 3. ONGLET : GESTION DES COMMANDES                        -->
+        <!-- ======================================================== -->
+        <section id="view-orders" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">📦 Gestion des Commandes & Livraisons</h3>
+                <span class="adm-card-subtitle">Suivi des étapes de préparation, livraison et encaissement</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <input type="text" id="orderSearchInput" class="adm-input" placeholder="🔍 N° commande, nom..." style="max-width:180px; padding:6px 10px; font-size:12px;">
+              </div>
+            </div>
+
+            <!-- Filtres par statuts -->
+            <div class="order-status-tabs">
+              <button class="order-filter-btn active" data-filter="all" onclick="window.vomAdmin.filterOrders('all')">🔘 Toutes</button>
+              <button class="order-filter-btn" data-filter="new" onclick="window.vomAdmin.filterOrders('new')">🟡 Nouvelles</button>
+              <button class="order-filter-btn" data-filter="confirmed" onclick="window.vomAdmin.filterOrders('confirmed')">🔵 Confirmées</button>
+              <button class="order-filter-btn" data-filter="prep" onclick="window.vomAdmin.filterOrders('prep')">🟠 En préparation</button>
+              <button class="order-filter-btn" data-filter="ready" onclick="window.vomAdmin.filterOrders('ready')">🟣 Prêtes</button>
+              <button class="order-filter-btn" data-filter="delivering" onclick="window.vomAdmin.filterOrders('delivering')">🛵 En livraison</button>
+              <button class="order-filter-btn" data-filter="delivered" onclick="window.vomAdmin.filterOrders('delivered')">🟢 Livrées</button>
+              <button class="order-filter-btn" data-filter="cancelled" onclick="window.vomAdmin.filterOrders('cancelled')">🔴 Annulées</button>
+            </div>
+
+            <!-- Grille des commandes -->
+            <div id="ordersAdminGrid" class="orders-grid"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 4. ONGLET : GESTION DU MENU & DES PLATS                  -->
+        <!-- ======================================================== -->
+        <section id="view-menu" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">🍔 Plats au Menu</h3>
+                <span class="adm-card-subtitle">Gestion de la disponibilité, tarifs, photos et descriptions</span>
+              </div>
+              <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.openAddDishModal()">
+                ➕ Nouveau Plat
+              </button>
+            </div>
+
+            <!-- Filtres & recherche plats -->
+            <div class="adm-form-row-2">
+              <input type="text" id="dishSearchInput" class="adm-input" placeholder="🔍 Rechercher un plat ou ingrédient...">
+              <select id="dishCategoryFilter" class="adm-select" onchange="window.vomAdmin.renderMenuDishes()"></select>
+            </div>
+
+            <!-- Grille des plats -->
+            <div id="dishesAdminGrid" class="dishes-admin-grid"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 5. ONGLET : GESTION DES CATÉGORIES                       -->
+        <!-- ======================================================== -->
+        <section id="view-categories" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">📂 Gestion des Catégories du Menu</h3>
+                <span class="adm-card-subtitle">Organisez l'ordre et les sections affichées sur l'application client</span>
+              </div>
+            </div>
+
+            <!-- Formulaire ajout catégorie -->
+            <div class="adm-card" style="background:var(--adm-accent-light); padding:12px;">
+              <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:8px;">➕ Créer une nouvelle catégorie :</div>
+              <div class="adm-form-row-3">
+                <input type="text" id="newCategoryName" class="adm-input" placeholder="Nom (Ex: Desserts & Douceurs)">
+                <input type="text" id="newCategoryIcon" class="adm-input" placeholder="Emoji / Icône (Ex: 🍰)" value="🍽️">
+                <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.addNewCategory()">
+                  + Ajouter la Catégorie
+                </button>
+              </div>
+            </div>
+
+            <!-- Liste ordonnable des catégories -->
+            <div id="categoriesAdminList" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 6. ONGLET : STATISTIQUES & RAPPORTS                      -->
+        <!-- ======================================================== -->
+        <section id="view-stats" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">📊 Performances & Statistiques Financières</h3>
+                <span class="adm-card-subtitle">Analyse des revenus, taux de livraison et meilleures ventes</span>
+              </div>
+            </div>
+
+            <!-- Métriques résumées -->
+            <div class="adm-kpi-grid">
+              <div class="adm-kpi-card">
+                <span class="kpi-label">Chiffre d'Affaires</span>
+                <span id="statTotalSales" class="kpi-value">0 Fc</span>
+                <span id="statSalesUSD" style="font-size:11.5px; color:var(--adm-primary); font-weight:700;">≈ 0 $ USD</span>
+              </div>
+
+              <div class="adm-kpi-card">
+                <span class="kpi-label">Commandes Totales</span>
+                <span id="statTotalOrders" class="kpi-value">0</span>
+                <span style="font-size:11px; color:var(--adm-text-muted);">Enregistrées</span>
+              </div>
+
+              <div class="adm-kpi-card">
+                <span class="kpi-label">Commandes Livrées</span>
+                <span id="statDeliveredRate" class="kpi-value" style="color:var(--adm-success);">0%</span>
+                <span style="font-size:11px; color:var(--adm-success);">0 livrées avec succès</span>
+              </div>
+
+              <div class="adm-kpi-card">
+                <span class="kpi-label">Commandes Annulées</span>
+                <span id="statCancelledCount" class="kpi-value" style="color:var(--adm-danger);">0</span>
+                <span style="font-size:11px; color:var(--adm-danger);">0 annulées</span>
+              </div>
+
+              <div class="adm-kpi-card">
+                <span class="kpi-label">Panier Moyen</span>
+                <span id="statAvgBasket" class="kpi-value">0 Fc</span>
+                <span style="font-size:11px; color:var(--adm-text-muted);">Par commande client</span>
+              </div>
+            </div>
+
+            <!-- Classement des plats les plus vendus -->
+            <div class="adm-card" style="margin-top:10px;">
+              <h4 style="font-size:13.5px; font-weight:800; color:var(--adm-primary); margin-bottom:12px;">🏆 Plats les Plus Vendus (Top Ventes)</h4>
+              <div id="statsTopDishesRanking"></div>
+            </div>
+
+            <!-- Répartition géographique des livraisons -->
+            <div class="adm-card">
+              <h4 style="font-size:13.5px; font-weight:800; color:var(--adm-primary); margin-bottom:8px;">📍 Adresses de Livraison les Plus Actives</h4>
+              <div id="statsZonesRanking"></div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 6.5 ONGLET : AVIS CLIENTS & MODÉRATION                  -->
+        <!-- ======================================================== -->
+        <section id="view-avis" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">⭐ Avis des Clients</h3>
+                <span class="adm-card-subtitle">Lisez, répondez et modérez les avis laissés sur vos plats</span>
+              </div>
+            </div>
+            <div id="reviewsAdminList" style="display:flex; flex-direction:column; gap:10px;"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 7. ONGLET : PROMOTIONS & CODES RÉDUCTION                 -->
+        <!-- ======================================================== -->
+        <section id="view-promotions" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">🎟️ Gestion des Promotions & Offres Spéciales</h3>
+                <span class="adm-card-subtitle">Créez des codes promo en % ou en montant pour booster vos ventes</span>
+              </div>
+            </div>
+
+            <!-- Formulaire Créer Promo -->
+            <div class="adm-card" style="background:var(--adm-accent-light);">
+              <div style="font-size:13px; font-weight:800; color:var(--adm-primary); margin-bottom:8px;">➕ Créer une Nouvelle Promotion :</div>
+              
+              <div class="adm-form-row-3">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Code Promotionnel :</label>
+                  <input type="text" id="newPromoCode" class="adm-input" placeholder="Ex: VOMFEST20" style="text-transform:uppercase; font-weight:800;">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Titre de l'Offre :</label>
+                  <input type="text" id="newPromoTitle" class="adm-input" placeholder="Ex: Réduction Week-end">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Type de Réduction :</label>
+                  <select id="newPromoType" class="adm-select">
+                    <option value="percent">Pourcentage (%)</option>
+                    <option value="fixed">Montant fixe (Fc)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="adm-form-row-3" style="margin-top:10px;">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Valeur (ex: 10% ou 1000 Fc) :</label>
+                  <input type="number" id="newPromoValue" class="adm-input" value="10">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Date de début :</label>
+                  <input type="date" id="newPromoStartDate" class="adm-input" value="2026-08-01">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Date de fin :</label>
+                  <input type="date" id="newPromoEndDate" class="adm-input" value="2026-09-01">
+                </div>
+              </div>
+
+              <button class="adm-btn adm-btn-primary" style="margin-top:12px; align-self:flex-start;" onclick="window.vomAdmin.addNewPromotion()">
+                🎟️ Activer et Enregistrer la Promotion
+              </button>
+            </div>
+
+            <!-- Liste des promotions actives -->
+            <div id="promotionsAdminList" style="display:flex; flex-direction:column; gap:10px;"></div>
+          </div>
+
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 8. ONGLET : AVIS CLIENTS & MODÉRATION                    -->
+        <!-- ======================================================== -->
+        <!-- ======================================================== -->
+        <!-- ONGLET : AIDE & GUIDE (GÉRANTE)                          -->
+        <!-- ======================================================== -->
+        <section id="view-help" class="adm-view-panel">
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">❓ Aide & Guide de l'application</h3>
+                <span class="adm-card-subtitle">Tout comprendre et résoudre les problèmes courants</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:14px;">
+
+              <div class="adm-card" style="background:#fdfcf9;">
+                <div style="font-size:13px; font-weight:800; color:var(--adm-primary);">📋 Fonctionnalités principales</div>
+                <ul style="font-size:12px; color:var(--adm-text); line-height:1.7; padding-left:18px; margin-top:6px;">
+                  <li><b>Dashboard</b> — vue d'ensemble : ventes, commandes, plats, messages non lus.</li>
+                  <li><b>Discussions</b> — chat en direct avec les clients (réponses rapides disponibles).</li>
+                  <li><b>Commandes</b> — recevoir, changer le statut, marquer payé, imprimer le reçu.</li>
+                  <li><b>Menu (Plats)</b> — ajouter/modifier/supprimer un plat, changer son prix et sa photo.</li>
+                  <li><b>Catégories</b> — organiser le menu.</li>
+                  <li><b>Statistiques</b> — chiffre d'affaires, commandes livrées, plats les plus vendus (calculés automatiquement).</li>
+                  <li><b>Promotions</b> — créer une réduction (% ou montant) avec dates.</li>
+                  <li><b>Paramètres</b> — restaurant, plats, livraison, paiement, apparence, sécurité, configuration.</li>
+                </ul>
+              </div>
+
+              <div class="adm-card" style="background:#fdfcf9;">
+                <div style="font-size:13px; font-weight:800; color:var(--adm-primary);">🛠️ Solutions aux problèmes courants</div>
+                <ul style="font-size:12px; color:var(--adm-text); line-height:1.7; padding-left:18px; margin-top:6px;">
+                  <li><b>Je ne reçois pas les commandes</b> → vérifiez que le restaurant est <b>Ouvert</b> (bouton en haut du Dashboard) et que la livraison est <b>activée</b> (Paramètres → Livraison).</li>
+                  <li><b>Un client ne voit pas un plat</b> → dans Menu (Plats), vérifiez que le plat est <b>Disponible</b>.</li>
+                  <li><b>Le chat ne répond pas</b> → le client et vous devez être connectés. Vérifiez votre connexion internet.</li>
+                  <li><b>J'ai oublié mon code PIN</b> → le PIN par défaut est <b>1234</b>. Vous pouvez le changer (Paramètres → Sécurité).</li>
+                  <li><b>J'ai oublié mon identifiant gérante</b> → l'identifiant par défaut est <b>cheffe</b>. Vous pouvez le changer (Paramètres → Sécurité).</li>
+                  <li><b>Le client ne trouve pas l'admin</b> → normal ! L'admin est caché : il se connecte avec l'identifiant <b>cheffe</b> + PIN sur la page de connexion normale.</li>
+                  <li><b>La livraison doit être payante</b> → Paramètres → Livraison : désactivez la gratuité et mettez un montant de frais.</li>
+                  <li><b>Changer le prix d'un plat</b> → Menu (Plats) → Modifier → changez le prix.</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- 9. ONGLET : PARAMÈTRES (AVEC LES 7 SECTIONS DEMANDÉES)   -->
+        <!-- ======================================================== -->
+        <section id="view-settings" class="adm-view-panel">
+          
+          <div class="adm-card">
+            <div class="adm-card-header">
+              <div>
+                <h3 class="adm-card-title">⚙️ Paramètres & Configuration de la Boutique</h3>
+                <span class="adm-card-subtitle">Personnalisation complète du restaurant, livraisons, paiements et sécurité</span>
+              </div>
+            </div>
+
+            <!-- Sous-navigation des 7 sections Paramètres -->
+            <div class="settings-nav-tabs">
+              <button class="settings-tab-btn active" data-subtab="restaurant" onclick="window.vomAdmin.switchSettingsSubTab('restaurant')">🏪 1. Restaurant</button>
+              <button class="settings-tab-btn" data-subtab="dishes" onclick="window.vomAdmin.switchSettingsSubTab('dishes')">🍔 2. Plats</button>
+              <button class="settings-tab-btn" data-subtab="delivery" onclick="window.vomAdmin.switchSettingsSubTab('delivery')">🚚 3. Livraison</button>
+              <button class="settings-tab-btn" data-subtab="payment" onclick="window.vomAdmin.switchSettingsSubTab('payment')">💵 4. Paiement</button>
+              <button class="settings-tab-btn" data-subtab="appearance" onclick="window.vomAdmin.switchSettingsSubTab('appearance')">🎨 5. Apparence</button>
+              <button class="settings-tab-btn" data-subtab="security" onclick="window.vomAdmin.switchSettingsSubTab('security')">🔐 6. Sécurité</button>
+              <button class="settings-tab-btn" data-subtab="general" onclick="window.vomAdmin.switchSettingsSubTab('general')">⚙️ 7. Configuration</button>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 1. SOUS-ONGLET : INFORMATIONS DU RESTAURANT    -->
+            <!-- ============================================== -->
+            <div id="settings-panel-restaurant" class="settings-panel active">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">🏪 Informations Officielles du Restaurant :</div>
+
+              <div class="adm-form-row-2">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Nom du restaurant :</label>
+                  <input type="text" id="setRestName" class="adm-input">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Slogan officiel :</label>
+                  <input type="text" id="setRestSlogan" class="adm-input">
+                </div>
+              </div>
+
+              <div class="adm-form-group">
+                <label class="adm-form-label">Adresse physique complète :</label>
+                <input type="text" id="setRestAddr" class="adm-input">
+              </div>
+
+              <div class="adm-form-row-2">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Numéro de téléphone / WhatsApp :</label>
+                  <input type="text" id="setRestPhone" class="adm-input">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Adresse e-mail :</label>
+                  <input type="email" id="setRestEmail" class="adm-input">
+                </div>
+              </div>
+
+              <div class="adm-form-row-3">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Horaires d'ouverture :</label>
+                  <input type="text" id="setRestHours" class="adm-input">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Jours de commande ouverts :</label>
+                  <input type="text" id="setRestOrderDays" class="adm-input">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Jours de livraison assurés :</label>
+                  <input type="text" id="setRestDeliveryDays" class="adm-input">
+                </div>
+              </div>
+
+              <button class="adm-btn adm-btn-primary" style="align-self:flex-start;" onclick="window.vomAdmin.saveRestaurantInfo()">
+                💾 Enregistrer les Informations du Restaurant
+              </button>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 2. SOUS-ONGLET : PARAMÈTRES DES PLATS          -->
+            <!-- ============================================== -->
+            <div id="settings-panel-dishes" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">🍔 Paramètres des Plats & Plat sur Mesure :</div>
+
+              <div class="adm-form-row-2">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Prix unique officiel des plats standards :</label>
+                  <input type="text" class="adm-input" value="6.500 Fc (Prix Unique Standard)" readonly style="background:#fdf6ee; font-weight:800; color:var(--adm-primary);">
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Prix de base du Plat sur Mesure (Fc) :</label>
+                  <div style="display:flex; gap:6px;">
+                    <input type="number" id="setCustomBasePrice" class="adm-input" value="8000" style="font-weight:800;">
+                    <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.saveCustomDishSettings()">OK</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Disponibilité du Plat sur Mesure -->
+              <div class="adm-card" style="background:#fdfcf9; margin-top:10px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                  <div>
+                    <div style="font-size:13px; font-weight:800; color:var(--adm-primary);">🎨 Plat sur Mesure disponible pour les clients :</div>
+                    <div style="font-size:12px; color:var(--adm-muted);">Désactivez pour masquer la personnalisation côté client (ex: rupture de grillades).</div>
+                  </div>
+                  <label style="display:flex; align-items:center; gap:8px; cursor:pointer; flex-shrink:0;">
+                    <span id="setCustomAvailableLabel" style="font-size:12px; font-weight:800; color:var(--adm-success);">🟢 Disponible</span>
+                    <input type="checkbox" id="setCustomAvailable" checked style="width:20px; height:20px; cursor:pointer;" onchange="window.vomAdmin.toggleCustomAvailability(this.checked)">
+                  </label>
+                </div>
+              </div>
+
+              <!-- Options du plat sur mesure : Viandes & Accompagnements -->
+              <div class="adm-form-row-2" style="margin-top:10px;">
+                <div class="adm-card" style="background:#fdfcf9;">
+                  <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">🍗 Aliments principaux disponibles (poulet, poisson…) :</div>
+                  <div id="adminCustomMeatsList" style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;"></div>
+                  <div style="display:flex; gap:6px;">
+                    <input type="text" id="newCustomMeatInput" class="adm-input" placeholder="Ex: Poulet Fumé 🍗">
+                    <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.addCustomOption('meats')">+</button>
+                  </div>
+                </div>
+
+                <div class="adm-card" style="background:#fdfcf9;">
+                  <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">🍌 Accompagnements disponibles :</div>
+                  <div id="adminCustomSidesList" style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;"></div>
+                  <div style="display:flex; gap:6px;">
+                    <input type="text" id="newCustomSideInput" class="adm-input" placeholder="Ex: Riz Sauté 🍚">
+                    <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.addCustomOption('sides')">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 3. SOUS-ONGLET : LIVRAISON                     -->
+            <!-- ============================================== -->
+            <div id="settings-panel-delivery" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">🚚 Paramètres de Livraison :</div>
+
+              <div class="adm-card" style="background:var(--adm-success-bg); border-color:#86efac;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div style="font-weight:900; color:var(--adm-success); font-size:14px;">Livraison 100% Gratuite (0 Fc / 0 $)</div>
+                    <div style="font-size:11.5px; color:#14532d;">La livraison est offerte à tous vos clients sur Kinshasa et Mbanza-Ngungu.</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <label class="adm-switch">
+                      <input type="checkbox" id="setDeliveryToggle" checked>
+                      <span class="adm-switch-slider"></span>
+                    </label>
+                    <span class="adm-pill pill-success" style="font-size:11.5px;">🟢 Activée</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gestion des zones de livraison -->
+              <div class="adm-card">
+                <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">📍 Zones de Livraison Desservies :</div>
+                <div id="adminDeliveryZonesList" style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;"></div>
+                
+                <div style="display:flex; gap:8px;">
+                  <input type="text" id="newDeliveryZoneInput" class="adm-input" placeholder="Ex: Kinshasa - Lemba">
+                  <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.addNewDeliveryZone()">+ Ajouter Zone</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 4. SOUS-ONGLET : PAIEMENT                      -->
+            <!-- ============================================== -->
+            <div id="settings-panel-payment" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">💵 Paramètres & Statuts de Paiement :</div>
+
+              <div class="adm-card" style="background:#fdfcf9;">
+                <div style="font-weight:800; font-size:13px; color:var(--adm-primary);">Méthode Principale :</div>
+                <div style="font-size:12.5px; font-weight:700; color:var(--adm-text); margin-top:2px;">
+                  💵 <strong>Paiement par transfert</strong> (Airtel Money, Orange Money, M-Pesa ou transfert bancaire).
+                </div>
+                <div id="setTotalCollectedDisplay" style="font-size:16px; font-weight:900; color:var(--adm-success); margin-top:6px;">
+                  2.750.000 Fc (Total des ventes encaissées)
+                </div>
+              </div>
+
+              <div class="adm-card">
+                <div style="font-size:12px; font-weight:800; color:var(--adm-text);">Statuts de paiement applicables :</div>
+                <div style="display:flex; gap:10px; margin-top:6px;">
+                  <span class="adm-pill pill-warning">🟡 En attente de paiement</span>
+                  <span class="adm-pill pill-success">🟢 Payé / Encaissé</span>
+                  <span class="adm-pill pill-danger">🔴 Non payé / Échec</span>
+                </div>
+              </div>
+
+              <div class="adm-card" style="border:1.5px solid var(--adm-accent); background:#fffaf2;">
+                <div style="font-weight:800; font-size:13px; color:var(--adm-primary);">📲 Numéros Mobile Money (pour recevoir l'argent) :</div>
+                <div style="font-size:12px; color:var(--adm-muted); margin-top:2px;">La gérante entre ici ses numéros. Ils seront affichés aux clients au moment du paiement.</div>
+                <div class="adm-form-row-2" style="margin-top:10px;">
+                  <div class="adm-form-group">
+                    <label class="adm-form-label">📶 Airtel Money :</label>
+                    <input type="text" id="payAirtelNumber" class="adm-input" placeholder="+243 8XX XXX XXX">
+                  </div>
+                  <div class="adm-form-group">
+                    <label class="adm-form-label">🟠 Orange Money :</label>
+                    <input type="text" id="payOrangeNumber" class="adm-input" placeholder="+243 8XX XXX XXX">
+                  </div>
+                </div>
+                <div class="adm-form-group">
+                  <label class="adm-form-label">🟢 M-Pesa :</label>
+                  <input type="text" id="payMpesaNumber" class="adm-input" placeholder="+243 8XX XXX XXX">
+                </div>
+                <button class="adm-btn adm-btn-primary" style="align-self:flex-start; margin-top:8px;" onclick="window.vomAdmin.savePaymentNumbers()">
+                  💾 Enregistrer les numéros Mobile Money
+                </button>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 5. SOUS-ONGLET : APPARENCE DE LA BOUTIQUE      -->
+            <!-- ============================================== -->
+            <div id="settings-panel-appearance" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">🎨 Personnalisation de l'Apparence :</div>
+
+              <div class="adm-form-row-2">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Couleur Principale (Marron Chocolat) :</label>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <input type="color" id="setPrimaryColorPicker" value="#8b4513" style="width:44px; height:38px; border:none; border-radius:8px; cursor:pointer;">
+                    <input type="text" class="adm-input" value="#8b4513" readonly style="font-weight:700;">
+                  </div>
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Couleur Secondaire (Caramel Doré) :</label>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <input type="color" id="setSecondaryColorPicker" value="#d4a574" style="width:44px; height:38px; border:none; border-radius:8px; cursor:pointer;">
+                    <input type="text" class="adm-input" value="#d4a574" readonly style="font-weight:700;">
+                  </div>
+                </div>
+              </div>
+
+              <div class="adm-form-group">
+                <label class="adm-form-label">Message de la bannière d'accueil :</label>
+                <input type="text" id="setBannerText" class="adm-input">
+              </div>
+
+              <button class="adm-btn adm-btn-primary" style="align-self:flex-start;" onclick="window.vomAdmin.saveAppearanceSettings()">
+                💾 Enregistrer l'Apparence
+              </button>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 6. SOUS-ONGLET : SÉCURITÉ                      -->
+            <!-- ============================================== -->
+            <div id="settings-panel-security" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">🔐 Sécurité de l'Espace Administrateur :</div>
+
+              <!-- Modification Identifiant Gérante -->
+              <div class="adm-card" style="background:#fdfcf9;">
+                <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:8px;">👤 Identifiant de la Gérante (pour la connexion cachée) :</div>
+                <div class="adm-form-row-2">
+                  <input type="text" id="secAdminId" class="adm-input" placeholder="Identifiant (ex: cheffe)" autocomplete="off">
+                  <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.saveAdminId()">💾 Enregistrer</button>
+                </div>
+                <div style="font-size:10.5px; color:var(--adm-text-muted); margin-top:6px;">C'est cet identifiant + le code PIN qui ouvrent l'admin depuis la page de connexion.</div>
+              </div>
+
+              <!-- Modification Code PIN -->
+              <div class="adm-card" style="background:#fdfcf9;">
+                <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:8px;">🔑 Modifier le Code PIN Administrateur (Gérante) :</div>
+                <div class="adm-form-row-3">
+                  <input type="password" id="secCurrentPin" class="adm-input" placeholder="PIN Actuel (ex: 1234)" maxlength="8">
+                  <input type="password" id="secNewPin1" class="adm-input" placeholder="Nouveau Code PIN" maxlength="8">
+                  <input type="password" id="secNewPin2" class="adm-input" placeholder="Confirmer Nouveau PIN" maxlength="8">
+                </div>
+                <button class="adm-btn adm-btn-primary" style="margin-top:8px; align-self:flex-start;" onclick="window.vomAdmin.saveNewPin()">
+                  🔒 Mettre à jour le Code PIN
+                </button>
+              </div>
+
+              <!-- Sessions Actives -->
+              <div class="adm-card">
+                <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">📱 Sessions Administrateur Actives :</div>
+                <div id="adminSessionsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+              </div>
+
+              <!-- Historique des connexions -->
+              <div class="adm-card">
+                <div style="font-size:12.5px; font-weight:800; color:var(--adm-primary); margin-bottom:6px;">📋 Historique Récent des Connexions :</div>
+                <table style="width:100%; border-collapse:collapse; text-align:left;">
+                  <thead>
+                    <tr style="border-bottom:2px solid var(--adm-accent-border); font-size:11px; color:var(--adm-text-muted);">
+                      <th style="padding:6px 8px;">Date</th>
+                      <th style="padding:6px 8px;">IP</th>
+                      <th style="padding:6px 8px;">Méthode</th>
+                      <th style="padding:6px 8px;">Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody id="adminLoginHistoryTable"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 7. SOUS-ONGLET : CONFIGURATION GÉNÉRALE        -->
+            <!-- ============================================== -->
+            <div id="settings-panel-general" class="settings-panel">
+              <div style="font-size:13.5px; font-weight:800; color:var(--adm-primary);">⚙️ Configuration Générale du Système :</div>
+
+              <div class="adm-form-row-2">
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Langue de l'application :</label>
+                  <select id="setConfigLang" class="adm-select">
+                    <option value="fr">Français 🇫🇷 (Officiel)</option>
+                    <option value="ln">Lingala 🇨🇩</option>
+                    <option value="en">English 🇬🇧</option>
+                  </select>
+                </div>
+
+                <div class="adm-form-group">
+                  <label class="adm-form-label">Devise principale :</label>
+                  <select id="setConfigCurrency" class="adm-select">
+                    <option value="Fc">Franc Congolais (Fc)</option>
+                    <option value="USD">Dollar Américain ($)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="adm-form-group">
+                <label class="adm-form-label">Conditions Générales d'Utilisation (CGU) :</label>
+                <textarea id="setConfigTerms" class="adm-textarea" rows="3"></textarea>
+              </div>
+
+              <div class="adm-form-group">
+                <label class="adm-form-label">Politique de Confidentialité :</label>
+                <textarea id="setConfigPrivacy" class="adm-textarea" rows="3"></textarea>
+              </div>
+
+              <button class="adm-btn adm-btn-primary" style="align-self:flex-start;" onclick="window.vomAdmin.saveGeneralConfig()">
+                💾 Enregistrer la Configuration Générale
+              </button>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL : AJOUT / MODIFICATION D'UN PLAT                   -->
+  <!-- ======================================================== -->
+  <div id="dishEditModalOverlay" class="adm-modal-overlay">
+    <div class="adm-modal-box">
+      <div class="adm-modal-header">
+        <h3 id="dishModalTitle" style="font-family:'Playfair Display',serif; font-size:16px; font-weight:800; color:var(--adm-primary);">➕ Ajouter un Nouveau Plat</h3>
+        <button class="btn-close-modal" onclick="window.vomAdmin.closeDishModal()">✕</button>
+      </div>
+
+      <!-- Importation Photo -->
+      <div style="display:flex; align-items:center; gap:14px;">
+        <input type="file" id="modalDishPhotoInput" accept="image/*" style="display:none;" onchange="window.vomAdmin.handleDishPhotoUpload(event)">
+        <div style="width:72px; height:72px; border-radius:14px; border:2px dashed var(--adm-accent); display:flex; align-items:center; justify-content:center; cursor:pointer; overflow:hidden; background:var(--adm-accent-light);" onclick="document.getElementById('modalDishPhotoInput').click()" title="Choisir une photo">
+          <img id="modalDishPhotoPreviewTag" src="" style="display:none; width:100%; height:100%; object-fit:cover;">
+          <span id="modalDishPhotoPlaceholderIcon" style="font-size:24px;">📷</span>
+        </div>
+        <div>
+          <div style="font-size:12.5px; font-weight:800;">Photo du Plat 📸</div>
+          <div style="font-size:10.5px; color:var(--adm-text-muted);">Cliquez pour importer depuis votre appareil ou prendre une photo</div>
+        </div>
+      </div>
+
+      <div class="adm-form-group">
+        <label class="adm-form-label">Nom du plat :</label>
+        <input type="text" id="editDishName" class="adm-input" placeholder="Ex: Cuisse Braisée Royale">
+      </div>
+
+      <div class="adm-form-row-2">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Prix officiel (Fc) :</label>
+          <input type="number" id="editDishPrice" class="adm-input" value="6500">
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label">Catégorie :</label>
+          <select id="editDishCategory" class="adm-select"></select>
+        </div>
+      </div>
+
+      <div class="adm-form-row-2">
+        <div class="adm-form-group">
+          <label class="adm-form-label">Temps de préparation :</label>
+          <input type="text" id="editDishPrepTime" class="adm-input" placeholder="Ex: 15-20 min" value="15 min">
+        </div>
+
+        <div class="adm-form-group">
+          <label class="adm-form-label">Badge spécial :</label>
+          <select id="editDishBadge" class="adm-select">
+            <option value="none">Aucun badge</option>
+            <option value="🔥 Épicé">🔥 Épicé</option>
+            <option value="⭐ Best-seller">⭐ Best-seller</option>
+            <option value="✨ Nouveau">✨ Nouveau</option>
+            <option value="👑 Royal">👑 Royal</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="adm-form-group">
+        <label class="adm-form-label">Ingrédients principaux :</label>
+        <input type="text" id="editDishIngredients" class="adm-input" placeholder="Ex: Cuisse de poulet, bananes plantains, épices kinois">
+      </div>
+
+      <div class="adm-form-group">
+        <label class="adm-form-label">Description du plat :</label>
+        <textarea id="editDishDesc" class="adm-textarea" placeholder="Description appétissante pour vos clients..."></textarea>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label class="adm-switch">
+          <input type="checkbox" id="editDishAvailable" checked>
+          <span class="adm-switch-slider"></span>
+        </label>
+        <span style="font-size:12px; font-weight:700;">Plat Disponible immédiatement aux commandes</span>
+      </div>
+
+
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <button class="adm-btn adm-btn-secondary" onclick="window.vomAdmin.closeDishModal()">Annuler</button>
+        <button class="adm-btn adm-btn-primary" onclick="window.vomAdmin.saveDishForm()">💾 Enregistrer le Plat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MODAL : REÇU THERMIQUE DE COMMANDE                       -->
+  <!-- ======================================================== -->
+  <div id="receiptModalOverlay" class="adm-modal-overlay">
+    <div class="adm-modal-box" style="max-width:400px;">
+      <div class="adm-modal-header">
+        <h3 style="font-family:'Playfair Display',serif; font-size:15px; font-weight:800; color:var(--adm-primary);">🧾 Reçu / Bon de Cuisine</h3>
+        <button class="btn-close-modal" onclick="window.vomAdmin.closeReceiptModal()">✕</button>
+      </div>
+      
+      <div id="receiptModalContent"></div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
+        <button class="adm-btn adm-btn-secondary" onclick="window.vomAdmin.closeReceiptModal()">Fermer</button>
+        <button class="adm-btn adm-btn-primary" onclick="window.print()">🖨️ Imprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Logique Admin Dédié -->
+  <script src="./js/sync.js"></script>
+  <script src="./js/admin.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[VOM FOOD Admin PWA] Service Worker actif :', reg.scope))
+          .catch(err => console.log('[VOM FOOD Admin PWA] Erreur Service Worker :', err));
+      });
+    }
+  </script>
+</body>
+</html>
