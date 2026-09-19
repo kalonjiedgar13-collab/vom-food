@@ -1,0 +1,24 @@
+VOM FOOD — VIDEO DE LA PAGE DE CHARGEMENT
+============================================
+
+Mettez votre video dans CE dossier (public/assets)
+avec EXACTEMENT ce nom :
+
+    loading-video.mp4
+
+(minuscules, avec le tiret -, format MP4)
+
+Exemple sur PC :
+  1. Trouvez votre video (ex : Fast Food.mp4)
+  2. Faites une copie, renommez la copie en : loading-video.mp4
+  3. Copiez loading-video.mp4 dans ce dossier public/assets
+  4. Faites : git add . / git commit / git push
+  5. Attendez 2-3 minutes, ouvrez https://vom-food.onrender.com
+
+Conseils :
+  - Video courte (3 a 8 secondes), legere (1 a 5 Mo ideal, max 10 Mo)
+  - Sans son (le son ne joue pas tout seul sur les telephones)
+  - Si le fichier est absent ou mal nomme, la page marche quand meme,
+    mais sans video.
+
+Ce fichier .txt peut rester ici, il ne gene pas.

@@ -26,6 +26,13 @@
     </div>
     <div class="loading-label" id="loadingLabel">Chargement…</div>
 
+    <!-- Vidéo (entre le logo et le bouton) : lecture auto, en boucle, sans son.
+         Fichier attendu : ./public/assets/loading-video.mp4
+         Si le fichier est absent, ce bloc se cache tout seul. -->
+    <div class="welcome-video" id="welcomeVideoWrap" aria-hidden="true">
+      <video id="welcomeVideo" src="./public/assets/loading-video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    </div>
+
     <div class="spacer"></div>
 
     <!-- Bouton (apparaît à 100%) -->
@@ -68,6 +75,20 @@
   }
 
   setTimeout(step, 400);
+
+  // Vidéo : si le fichier est absent ou illisible, on cache le bloc proprement.
+  (function(){
+    var v = document.getElementById('welcomeVideo');
+    var w = document.getElementById('welcomeVideoWrap');
+    if(!v || !w) return;
+    function hide(){ w.style.display = 'none'; }
+    v.addEventListener('error', hide, true);
+    setTimeout(function(){ if(v.readyState < 2){ hide(); } }, 6000);
+    try {
+      var pr = v.play && v.play();
+      if(pr && pr.catch){ pr.catch(function(){}); }
+    } catch(e){}
+  })();
 </script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 // Service Worker pour l'Application Web Progressive (PWA) VOM FOOD
-const CACHE_NAME = 'vom-food-webapp-v1.50.0';
+const CACHE_NAME = 'vom-food-webapp-v1.51.0';
+// NOTE : la vidéo ./public/assets/loading-video.mp4 n'est PAS pré-cachée
+// (fichier ajouté par le gérant, parfois lourd) : elle est mise en cache
+// automatiquement à la première lecture grâce au gestionnaire fetch ci-dessous.
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

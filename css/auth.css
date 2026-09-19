@@ -310,6 +310,26 @@ body{
   transition:opacity .3s ease;
 }
 
+/* ---------- Vidéo page de chargement (entre logo et bouton) ---------- */
+.welcome-video{
+  width:min(70%, 240px);
+  margin-top:20px;
+  border-radius:12px;
+  overflow:hidden;
+  line-height:0;
+  box-shadow:0 6px 18px rgba(60,40,20,.12);
+  background:#000;
+}
+.welcome-video video{
+  width:100%; height:auto; display:block;
+}
+@media (max-height:720px){
+  .loading-logo-frame{margin-top:9%;}
+  .loading-slogan{margin-top:16px;}
+  .loading-progress-wrap{margin-top:22px;}
+  .welcome-video{width:min(56%, 200px); margin-top:12px;}
+}
+
 /* ============================================================
    TRANSITIONS & NAVIGATION
    ============================================================ */
