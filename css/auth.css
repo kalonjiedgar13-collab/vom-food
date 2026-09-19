@@ -318,12 +318,12 @@ body{
 }
 .page.welcome-centered .loading-logo-frame{margin-top:0;}
 .page.welcome-centered .loading-slogan{margin-top:18px;}
-.page.welcome-centered .welcome-video{margin-top:18px;}
+.page.welcome-centered .welcome-animation{margin-top:18px;}
 .page.welcome-centered .loading-progress-wrap{margin-top:20px;}
 .page.welcome-centered .actions{padding-bottom:0; margin-top:22px;}
 
-/* ---------- Vidéo page de chargement (entre slogan et barre) ---------- */
-.welcome-video{
+/* ---------- Animation page de chargement (entre slogan et barre) ---------- */
+.welcome-animation{
   width:min(70%, 240px);
   margin-top:20px;
   border-radius:12px;
@@ -332,17 +332,17 @@ body{
   box-shadow:0 6px 18px rgba(60,40,20,.12);
   background:#000;
 }
-.welcome-video video{
+.welcome-animation img{
   width:100%; height:auto; display:block;
 }
 @media (max-height:720px){
   .page.welcome-centered{padding-top:18px; padding-bottom:18px;}
   .page.welcome-centered .loading-logo-frame{margin-top:0;}
   .page.welcome-centered .loading-slogan{margin-top:12px;}
-  .page.welcome-centered .welcome-video{margin-top:12px;}
+  .page.welcome-centered .welcome-animation{margin-top:12px;}
   .page.welcome-centered .loading-progress-wrap{margin-top:14px;}
   .page.welcome-centered .actions{margin-top:14px;}
-  .welcome-video{width:min(56%, 200px);}
+  .welcome-animation{width:min(56%, 200px);}
 }
 
 /* ============================================================

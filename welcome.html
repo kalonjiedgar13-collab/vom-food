@@ -19,14 +19,14 @@
     <!-- Slogan -->
     <div class="loading-slogan">« Manger n'est pas un luxe, c'est un droit »</div>
 
-    <!-- Vidéo : lecture auto, en boucle, sans son.
-         Fichier attendu : ./public/assets/loading-video.mp4
+    <!-- Animation (entre slogan et barre).
+         Fichier : ./public/assets/loading-animation.svg
          Si le fichier est absent, ce bloc se cache tout seul. -->
-    <div class="welcome-video" id="welcomeVideoWrap" aria-hidden="true">
-      <video id="welcomeVideo" src="./public/assets/loading-video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    <div class="welcome-animation" id="welcomeAnimWrap" aria-hidden="true">
+      <img id="welcomeAnim" src="./public/assets/loading-animation.svg" alt="">
     </div>
 
-    <!-- Barre de chargement (sous la vidéo) -->
+    <!-- Barre de chargement (sous l'animation) -->
     <div class="loading-progress-wrap">
       <div class="loading-progress"><span id="bar"></span></div>
       <div class="loading-pct" id="pct">0%</div>
@@ -74,18 +74,12 @@
 
   setTimeout(step, 400);
 
-  // Vidéo : si le fichier est absent ou illisible, on cache le bloc proprement.
+  // Animation : si le fichier est absent ou illisible, on cache le bloc proprement.
   (function(){
-    var v = document.getElementById('welcomeVideo');
-    var w = document.getElementById('welcomeVideoWrap');
-    if(!v || !w) return;
-    function hide(){ w.style.display = 'none'; }
-    v.addEventListener('error', hide, true);
-    setTimeout(function(){ if(v.readyState < 2){ hide(); } }, 6000);
-    try {
-      var pr = v.play && v.play();
-      if(pr && pr.catch){ pr.catch(function(){}); }
-    } catch(e){}
+    var img = document.getElementById('welcomeAnim');
+    var w = document.getElementById('welcomeAnimWrap');
+    if(!img || !w) return;
+    img.addEventListener('error', function(){ w.style.display = 'none'; });
   })();
 </script>
 </body>
