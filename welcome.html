@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="./css/auth.css">
 </head>
 <body>
-  <div class="page">
+  <div class="page welcome-centered">
     <!-- Logo dans un cadre -->
     <div class="loading-logo-frame">
       <img src="./public/assets/vom_bienvenue_originale.jpg" alt="BIENVENUE chez VOM FOOD">
@@ -19,23 +19,21 @@
     <!-- Slogan -->
     <div class="loading-slogan">« Manger n'est pas un luxe, c'est un droit »</div>
 
-    <!-- Barre de chargement -->
-    <div class="loading-progress-wrap">
-      <div class="loading-progress"><span id="bar"></span></div>
-      <div class="loading-pct" id="pct">0%</div>
-    </div>
-    <div class="loading-label" id="loadingLabel">Chargement…</div>
-
-    <!-- Vidéo (entre le logo et le bouton) : lecture auto, en boucle, sans son.
+    <!-- Vidéo : lecture auto, en boucle, sans son.
          Fichier attendu : ./public/assets/loading-video.mp4
          Si le fichier est absent, ce bloc se cache tout seul. -->
     <div class="welcome-video" id="welcomeVideoWrap" aria-hidden="true">
       <video id="welcomeVideo" src="./public/assets/loading-video.mp4" autoplay muted loop playsinline preload="metadata"></video>
     </div>
 
-    <div class="spacer"></div>
+    <!-- Barre de chargement (sous la vidéo) -->
+    <div class="loading-progress-wrap">
+      <div class="loading-progress"><span id="bar"></span></div>
+      <div class="loading-pct" id="pct">0%</div>
+    </div>
+    <div class="loading-label" id="loadingLabel">Chargement…</div>
 
-    <!-- Bouton (apparaît à 100%) -->
+    <!-- Bouton (apparaît à 100%, la place est réservée donc rien ne bouge) -->
     <div class="actions">
       <button id="welcomeBtn" class="btn hidden" onclick="continueSession()">Continuer</button>
     </div>
